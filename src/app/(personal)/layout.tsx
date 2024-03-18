@@ -1,4 +1,4 @@
-import '@/styles/index.css'
+import '@/css/index.css'
 
 import type { Metadata, Viewport } from 'next'
 import dynamic from 'next/dynamic'

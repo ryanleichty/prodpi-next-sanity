@@ -1,6 +1,6 @@
 import type { PortableTextBlock } from 'next-sanity'
 
-import { CustomPortableText } from '@/components//shared/CustomPortableText'
+import { CustomPortableText } from '@/components/shared/CustomPortableText'
 import type { SettingsPayload } from '@/types'
 
 interface FooterProps {
