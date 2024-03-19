@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --container-padding: theme(spacing.4);
+    --container-max-width: theme(screens.2xl);
+
+    @media (min-width: theme(screens.md)) {
+      --container-padding: theme(spacing.8);
+    }
+  }
+}

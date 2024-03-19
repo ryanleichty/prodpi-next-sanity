@@ -69,7 +69,7 @@ export default memo(function IntroTemplate() {
         </div>
 
         <div className="mx-6 md:mx-0 md:mr-24">
-          <h2 className="mb-5 text-xl font-bold tracking-tight md:text-5xl">
+          <h2 className="mb-5 text-xl font-medium tracking-tight md:text-5xl">
             Next steps
           </h2>
 
@@ -99,7 +99,7 @@ export default memo(function IntroTemplate() {
               circleTitle="1"
               element={
                 <div>
-                  <div className="col-span-2 mb-2 mt-1 font-semibold">
+                  <div className="col-span-2 mb-2 mt-1 font-medium">
                     Create a schema
                   </div>
 
@@ -144,7 +144,7 @@ export default memo(function IntroTemplate() {
               circleTitle="2"
               element={
                 <div>
-                  <div className="col-span-2 mb-2 mt-1 font-semibold">
+                  <div className="col-span-2 mb-2 mt-1 font-medium">
                     Create content with Sanity Studio
                   </div>
                   <div className="text-xs text-gray-700">
@@ -173,7 +173,7 @@ export default memo(function IntroTemplate() {
               circleTitle="3"
               element={
                 <div>
-                  <div className="col-span-2 mb-3 mt-1 font-semibold">
+                  <div className="col-span-2 mb-3 mt-1 font-medium">
                     Learn more and get help
                   </div>
                   <ul>

@@ -1,20 +1,37 @@
-import '@/css/index.css'
+import '@/css/main.css'
 
 import type { Metadata, Viewport } from 'next'
 import dynamic from 'next/dynamic'
+import localFont from 'next/font/local'
 import { draftMode } from 'next/headers'
 import { toPlainText } from 'next-sanity'
 import { Suspense } from 'react'
 
-import { Footer } from '@/components/global/Footer'
-import { Navbar } from '@/components/global/Navbar'
-import IntroTemplate from '@/intro-template'
+import Footer from '@/components/Footer'
+import Header from '@/components/Header'
 import { urlForOpenGraphImage } from '@/sanity/lib/utils'
 import { loadHomePage, loadSettings } from '@/sanity/loader/loadQuery'
 
 const LiveVisualEditing = dynamic(
   () => import('@/sanity/loader/LiveVisualEditing'),
 )
+
+const gtsuper = localFont({
+  src: [
+    {
+      path: '../../fonts/GT-Super-Display-Light.woff2',
+      weight: '300',
+      style: 'normal',
+    },
+    {
+      path: '../../fonts/GT-Super-Display-Light-Italic.woff2',
+      weight: '300',
+      style: 'italic',
+    },
+  ],
+  display: 'swap',
+  variable: '--font-gtsuper',
+})
 
 export async function generateMetadata(): Promise<Metadata> {
   const [{ data: settings }, { data: homePage }] = await Promise.all([
@@ -40,31 +57,29 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export const viewport: Viewport = {
-  themeColor: '#000',
+  themeColor: 'black',
 }
 
-export default async function IndexRoute({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
   return (
-    <>
-      <div className="flex min-h-screen flex-col bg-white text-black">
+    <html lang="en" className={gtsuper.variable}>
+      <head>
+        <link rel="stylesheet" href="https://use.typekit.net/sbu6cys.css" />
+      </head>
+      <body className="antialiased bg-off-white selection:bg-surfboard/50 flex min-h-screen flex-col">
         <Suspense>
-          <Navbar />
+          <Header />
         </Suspense>
-        <div className="mt-20 flex-grow px-4 md:px-16 lg:px-32">
-          <Suspense>{children}</Suspense>
-        </div>
+        <Suspense>{children}</Suspense>
         <Suspense>
-          <Footer />
+          <Footer className="mt-auto" />
         </Suspense>
-        <Suspense>
-          <IntroTemplate />
-        </Suspense>
-      </div>
+      </body>
       {draftMode().isEnabled && <LiveVisualEditing />}
-    </>
+    </html>
   )
 }
