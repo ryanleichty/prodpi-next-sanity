@@ -20,6 +20,7 @@ import milestone from '@/sanity/schemas/objects/milestone'
 import timeline from '@/sanity/schemas/objects/timeline'
 import home from '@/sanity/schemas/singletons/home'
 import settings from '@/sanity/schemas/singletons/settings'
+import { defaultDocumentNode } from '@/sanity/defaultDocumentNode'
 
 const title =
   process.env.NEXT_PUBLIC_SANITY_PROJECT_TITLE ||
@@ -47,6 +48,7 @@ export default defineConfig({
   },
   plugins: [
     structureTool({
+      defaultDocumentNode,
       structure: pageStructure([home, settings]),
     }),
     media(),
