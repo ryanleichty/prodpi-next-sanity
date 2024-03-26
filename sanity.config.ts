@@ -8,6 +8,7 @@ import { defineConfig } from 'sanity'
 import { presentationTool } from 'sanity/presentation'
 import { structureTool } from 'sanity/structure'
 import { unsplashImageAsset } from 'sanity-plugin-asset-source-unsplash'
+import { media } from 'sanity-plugin-media'
 
 import { apiVersion, dataset, projectId, studioUrl } from '@/sanity/lib/api'
 import { locate } from '@/sanity/plugins/locate'
@@ -48,6 +49,7 @@ export default defineConfig({
     structureTool({
       structure: pageStructure([home, settings]),
     }),
+    media(),
     presentationTool({
       locate,
       previewUrl: {
