@@ -1,7 +1,4 @@
 'use client'
-/**
- * This config is used to set up Sanity Studio that's mounted on the `app/studio/[[...index]]/Studio.tsx` route
- */
 
 import { visionTool } from '@sanity/vision'
 import { defineConfig } from 'sanity'
@@ -9,47 +6,26 @@ import { presentationTool } from 'sanity/presentation'
 import { structureTool } from 'sanity/structure'
 import { unsplashImageAsset } from 'sanity-plugin-asset-source-unsplash'
 import { media } from 'sanity-plugin-media'
-
 import { apiVersion, dataset, projectId, studioUrl } from '@/sanity/lib/api'
-import { locate } from '@/sanity/plugins/locate'
-import { pageStructure, singletonPlugin } from '@/sanity/plugins/settings'
-import page from '@/sanity/schemas/documents/page'
-import project from '@/sanity/schemas/documents/project'
-import duration from '@/sanity/schemas/objects/duration'
-import milestone from '@/sanity/schemas/objects/milestone'
-import timeline from '@/sanity/schemas/objects/timeline'
-import home from '@/sanity/schemas/singletons/home'
-import settings from '@/sanity/schemas/singletons/settings'
-import { defaultDocumentNode } from '@/sanity/defaultDocumentNode'
-
-const title =
-  process.env.NEXT_PUBLIC_SANITY_PROJECT_TITLE ||
-  'Next.js Personal Website with Sanity.io'
+import { locate } from '@/sanity/presentation/locate'
+import { singletonPlugin } from '@/sanity/plugins/settings'
+import { schemaTypes } from '@/sanity/schema'
+import home from '@/sanity/schema/singletons/home'
+import settings from '@/sanity/schema/singletons/settings'
+import { structure, defaultDocumentNode } from '@/sanity/structure'
 
 export default defineConfig({
   basePath: studioUrl,
   projectId: projectId || '',
   dataset: dataset || '',
-  title,
+  title: process.env.NEXT_PUBLIC_SANITY_PROJECT_TITLE || 'ProDPI',
   schema: {
-    // If you want more content types, you can add them to this array
-    types: [
-      // Singletons
-      home,
-      settings,
-      // Documents
-      duration,
-      page,
-      project,
-      // Objects
-      milestone,
-      timeline,
-    ],
+    types: schemaTypes,
   },
   plugins: [
     structureTool({
+      structure,
       defaultDocumentNode,
-      structure: pageStructure([home, settings]),
     }),
     media(),
     presentationTool({
@@ -64,7 +40,7 @@ export default defineConfig({
     singletonPlugin([home.name, settings.name]),
     // Add an image asset source for Unsplash
     unsplashImageAsset(),
-    // Vision lets you query your content with GROQ in the studio
+    // Vision is a tool that lets you query your content with GROQ in the studio
     // https://www.sanity.io/docs/the-vision-plugin
     visionTool({ defaultApiVersion: apiVersion }),
   ],

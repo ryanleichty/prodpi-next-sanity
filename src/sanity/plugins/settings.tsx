@@ -2,44 +2,57 @@
  * This plugin contains all the logic for setting up the singletons
  */
 
-import { type DocumentDefinition } from 'sanity'
+import {
+  NewDocumentOptionsResolver,
+  type DocumentDefinition,
+  DocumentActionsResolver,
+} from 'sanity'
 import { type StructureResolver } from 'sanity/structure'
 
 export const singletonPlugin = (types: string[]) => {
+  const resolveNewDocumentOptions: NewDocumentOptionsResolver = (
+    prev,
+    { creationContext },
+  ) => {
+    if (creationContext.type === 'global') {
+      return prev.filter(
+        (templateItem) => !types.includes(templateItem.templateId),
+      )
+    }
+
+    return prev
+  }
+
+  const resolveDocumentActions: DocumentActionsResolver = (
+    prev,
+    { schemaType }: { schemaType: string },
+  ) => {
+    if (types.includes(schemaType)) {
+      return prev.filter(({ action }) => action !== 'duplicate')
+    }
+
+    return prev
+  }
+
   return {
-    name: 'singletonPlugin',
+    name: 'singleton-plugin',
     document: {
-      // Hide 'Singletons (such as Home)' from new document options
-      // https://user-images.githubusercontent.com/81981/195728798-e0c6cf7e-d442-4e58-af3a-8cd99d7fcc28.png
-      newDocumentOptions: (prev, { creationContext }) => {
-        if (creationContext.type === 'global') {
-          return prev.filter(
-            (templateItem) => !types.includes(templateItem.templateId),
-          )
-        }
-
-        return prev
-      },
-      // Removes the "duplicate" action on the Singletons (such as Home)
-      actions: (prev, { schemaType }) => {
-        if (types.includes(schemaType)) {
-          return prev.filter(({ action }) => action !== 'duplicate')
-        }
-
-        return prev
-      },
+      // Hides new document options on singletons
+      newDocumentOptions: resolveNewDocumentOptions,
+      // Removes the "duplicate" action on singletons
+      actions: resolveDocumentActions,
     },
   }
 }
 
-// The StructureResolver is how we're changing the DeskTool structure to linking to document (named Singleton)
-// like how "Home" is handled.
+// The StructureResolver is how we're changing the structureTool structure to
+// linking to document (named Singleton) like how "Home" is handled.
 export const pageStructure = (
   typeDefArray: DocumentDefinition[],
 ): StructureResolver => {
   return (S) => {
     // Goes through all of the singletons that were provided and translates them into something the
-    // Desktool can understand
+    // structureTool can understand
     const singletonItems = typeDefArray.map((typeDef) => {
       return S.listItem()
         .title(typeDef.title!)

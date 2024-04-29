@@ -1,16 +1,14 @@
+import Footer from '@/components/Footer'
+import Header from '@/components/Header'
 import '@/css/main.css'
-
+import { urlForOpenGraphImage } from '@/sanity/lib/utils'
+import { loadHomePage, loadSettings } from '@/sanity/loader/loadQuery'
 import type { Metadata, Viewport } from 'next'
+import { toPlainText } from 'next-sanity'
 import dynamic from 'next/dynamic'
 import localFont from 'next/font/local'
 import { draftMode } from 'next/headers'
-import { toPlainText } from 'next-sanity'
 import { Suspense } from 'react'
-
-import Footer from '@/components/Footer'
-import Header from '@/components/Header'
-import { urlForOpenGraphImage } from '@/sanity/lib/utils'
-import { loadHomePage, loadSettings } from '@/sanity/loader/loadQuery'
 
 const LiveVisualEditing = dynamic(
   () => import('@/sanity/loader/LiveVisualEditing'),
@@ -70,7 +68,7 @@ export default async function RootLayout({
       <head>
         <link rel="stylesheet" href="https://use.typekit.net/sbu6cys.css" />
       </head>
-      <body className="antialiased bg-off-white selection:bg-surfboard/50 flex min-h-screen flex-col">
+      <body className="flex min-h-screen flex-col bg-off-white antialiased selection:bg-surfboard/50">
         <Suspense>
           <Header />
         </Suspense>

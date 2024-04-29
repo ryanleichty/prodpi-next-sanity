@@ -27,6 +27,18 @@ export interface ShowcaseProject {
   title?: string
 }
 
+export interface PrintMethod {
+  title?: string
+  description?: string
+  summary?: PortableTextBlock[]
+}
+
+export interface ProductAttribute {
+  title?: string
+  description?: string
+  image?: Image[]
+}
+
 // Page payloads
 
 export interface HomePagePayload {
@@ -42,6 +54,30 @@ export interface PagePayload {
   overview?: PortableTextBlock[]
   title?: string
   slug?: string
+}
+
+export interface ProductPayload {
+  title?: string
+  slug?: string
+  description?: string
+  productCategory?: {
+    title?: string
+    slug?: string
+    headline?: string
+  }
+  summary?: PortableTextBlock[]
+  imageGallery: Image[]
+  printMethods?: PrintMethod[]
+  productAttributes?: ProductAttribute[]
+  blocks?: string
+  editor?: {
+    id?: string
+    slug?: string
+  }
+  seo?: {
+    title?: string
+    description?: string
+  }
 }
 
 export interface ProjectPayload {

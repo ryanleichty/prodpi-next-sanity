@@ -4,6 +4,25 @@ import { cx } from '@/utils'
 
 type Props = React.ComponentPropsWithoutRef<'footer'>
 
+const footerLinks = [
+  {
+    title: 'Turnaround Times',
+    url: '/turnaround-times',
+  },
+  {
+    title: 'Shipping Info',
+    url: '/shipping',
+  },
+  {
+    title: 'PSD Guides',
+    url: '/psd-guides',
+  },
+  {
+    title: 'Integrated Partners',
+    url: '/integrated-partners',
+  },
+]
+
 export default function Footer({ className, ...props }: Props) {
   return (
     <>
@@ -16,32 +35,13 @@ export default function Footer({ className, ...props }: Props) {
             <div>
               <h2 className="mb-4 font-sans-wide">Helpful Info</h2>
               <ul>
-                <li>
-                  <Link
-                    className="inline-block py-0.5"
-                    href="/turnaround-times"
-                  >
-                    Turnaround Times
-                  </Link>
-                </li>
-                <li>
-                  <Link className="inline-block py-0.5" href="/shipping">
-                    Shipping Info
-                  </Link>
-                </li>
-                <li>
-                  <Link className="inline-block py-0.5" href="/psd-guides">
-                    PSD Guides
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="inline-block py-0.5"
-                    href="/integrated-partners"
-                  >
-                    Integrated Partners
-                  </Link>
-                </li>
+                {footerLinks.map((item) => (
+                  <li key={item.url}>
+                    <Link className="inline-block py-0.5" href={item.url}>
+                      {item.title}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
             <div>

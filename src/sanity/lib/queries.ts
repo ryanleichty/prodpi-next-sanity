@@ -26,6 +26,44 @@ export const pagesBySlugQuery = groq`
   }
 `
 
+export const PRODUCT_QUERY = groq`
+  *[_type == "product" && slug.current == $slug][0] {
+    _id,
+    title,
+    "slug": slug.current,
+    description,
+    productCategory->{
+      title,
+      slug,
+      headline,
+    },
+    summary,
+    imageGallery[]{
+      "id": asset->_id,
+      "url": asset->url,
+    },
+    printMethods,
+    productAttributes[]->{
+      _id,
+      title,
+      description,
+      image {
+        "id": asset->_id,
+        "url": asset->url,
+      },
+    },
+    blocks,
+    editor {
+      id,
+      slug,
+    },
+    seo {
+      title,
+      description,
+    },
+  }
+`
+
 export const projectBySlugQuery = groq`
   *[_type == "project" && slug.current == $slug][0] {
     _id,

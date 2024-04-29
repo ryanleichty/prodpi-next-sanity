@@ -18,7 +18,7 @@ function Button(
   const button = cva({
     base: 'inline-flex font-sans-wide items-center justify-between gap-2 h-12 whitespace-nowrap text-sm uppercase tracking-widest px-6 transition-colors duration-100',
     variants: {
-      intent: {
+      variant: {
         primary: 'bg-pacific text-white hover:bg-black',
         secondary: 'bg-sand text-black hover:bg-white',
       },

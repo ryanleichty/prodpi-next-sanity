@@ -7,6 +7,7 @@ import { client } from '@/sanity/lib/client'
 import {
   homePageQuery,
   pagesBySlugQuery,
+  PRODUCT_QUERY,
   projectBySlugQuery,
   settingsQuery,
 } from '@/sanity/lib/queries'
@@ -14,6 +15,7 @@ import { token } from '@/sanity/lib/token'
 import {
   HomePagePayload,
   PagePayload,
+  ProductPayload,
   ProjectPayload,
   SettingsPayload,
 } from '@/types'
@@ -75,6 +77,14 @@ export function loadHomePage() {
     homePageQuery,
     {},
     { next: { tags: ['home', 'project'] } },
+  )
+}
+
+export function loadProduct(slug: string) {
+  return loadQuery<ProductPayload | null>(
+    PRODUCT_QUERY,
+    { slug },
+    { next: { tags: [`product:${slug}`] } },
   )
 }
 

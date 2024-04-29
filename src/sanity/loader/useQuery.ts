@@ -4,9 +4,7 @@ import {
   type UseQueryOptionsDefinedInitial,
 } from '@sanity/react-loader'
 import * as queryStore from '@sanity/react-loader'
-
 import { SettingsPayload } from '@/types'
-
 import { settingsQuery } from '../lib/queries'
 
 /**

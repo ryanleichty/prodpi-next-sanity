@@ -3,7 +3,6 @@ import {
   DocumentLocationResolver,
   DocumentLocationsState,
 } from 'sanity/presentation'
-
 import { resolveHref } from '@/sanity/lib/utils'
 
 export const locate: DocumentLocationResolver = (params, context) => {
