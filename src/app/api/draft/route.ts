@@ -12,6 +12,7 @@ export async function GET(request: Request) {
     clientWithToken,
     request.url,
   )
+  
   if (!isValid) {
     return new Response('Invalid secret', { status: 401 })
   }

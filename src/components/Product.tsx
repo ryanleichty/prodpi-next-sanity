@@ -1,14 +1,17 @@
 import { ProductPayload } from '@/types'
-import { CustomPortableText } from './shared/CustomPortableText'
 import { cx } from '@/utils'
+import ProductBlocks from './ProductBlocks'
+import { PortableText } from 'next-sanity'
+import { StudioPathLike } from '@sanity/react-loader'
 
 type Props = {
   product: ProductPayload | null
+  encodeDataAttribute: (path: StudioPathLike) => string | undefined
 }
 
-export default function Product({ product }: Props) {
+export default function Product({ product, encodeDataAttribute }: Props) {
   // Default to an empty object to allow previews on non-existent documents
-  const { title, description, productCategory, summary, imageGallery, productAttributes } =
+  const { title, description, productCategory, summary, imageGallery, productAttributes, blocks } =
     product ?? {}
 
   return (
@@ -26,14 +29,22 @@ export default function Product({ product }: Props) {
             <div>
               <div className="flex h-[600px] gap-8 overflow-x-auto">
                 {imageGallery.map((image) => (
-                  <img key={image.id} src={image.url} alt="" />
+                  // eslint-disable-next-line
+                  <img
+                    key={image._key}
+                    src={image.url}
+                    alt={image.alt}
+                    width={image.width}
+                    height={image.height}
+                    data-sanity={encodeDataAttribute?.(['imageGallery'])}
+                  />
                 ))}
               </div>
               <div className="mt-6 flex gap-1">
                 {imageGallery.map((image, i) => (
                   <button
                     className={cx('h-0.5 w-8', i === 0 ? 'bg-black' : 'bg-black/10')}
-                    key={image.id}
+                    key={image._key}
                   ></button>
                 ))}
               </div>
@@ -41,10 +52,25 @@ export default function Product({ product }: Props) {
           )}
 
           {summary && (
-            <div className="mt-12">
-              <CustomPortableText
-                paragraphClasses="italic font-serif [&_strong]:uppercase [&_strong]:font-sans-wide [&_strong]:font-light [&_strong]:not-italic text-4xl"
+            <div className="mt-12" data-sanity-edit-target>
+              <PortableText
                 value={summary}
+                components={{
+                  block: {
+                    normal: ({ children }) => {
+                      return <p className="font-serif text-4xl italic">{children}</p>
+                    },
+                  },
+                  marks: {
+                    strong: ({ children }) => {
+                      return (
+                        <strong className="font-sans-wide font-light uppercase not-italic">
+                          {children}
+                        </strong>
+                      )
+                    },
+                  },
+                }}
               />
             </div>
           )}
@@ -63,6 +89,12 @@ export default function Product({ product }: Props) {
             ))}
           </div>
         </section>
+      )}
+
+      {blocks && (
+        <div className="my-16 space-y-8">
+          <ProductBlocks value={blocks} />
+        </div>
       )}
     </div>
   )

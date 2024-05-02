@@ -39,8 +39,12 @@ export const PRODUCT_QUERY = groq`
     },
     summary,
     imageGallery[]{
-      "id": asset->_id,
+      "_key": asset->_key,
       "url": asset->url,
+      "width": asset->metadata.dimensions.width,
+      "height": asset->metadata.dimensions.height,
+      alt,
+      caption,
     },
     printMethods,
     productAttributes[]->{
@@ -52,7 +56,39 @@ export const PRODUCT_QUERY = groq`
         "url": asset->url,
       },
     },
-    blocks,
+    blocks[]{
+      ...,
+      _type == 'oneColumn' => {
+        body,
+        image {
+          "url": asset->url,
+          alt,
+          caption,
+          "width": asset->metadata.dimensions.width,
+          "height": asset->metadata.dimensions.height,
+        },
+      },
+      _type == 'threeColumn' => {
+        columns[]{
+          _type == 'textColumn' => {
+            ...,
+            eyebrow,
+            body,
+            textSize,
+          },
+          _type == 'imageColumn' => {
+            ...,
+            image {
+              "url": asset->url,
+              alt,
+              caption,
+              "width": asset->metadata.dimensions.width,
+              "height": asset->metadata.dimensions.height,
+            },
+          },
+        }
+      },
+    },
     editor {
       id,
       slug,

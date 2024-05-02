@@ -1,5 +1,5 @@
 import { BlockElementIcon } from '@sanity/icons'
-import { defineField, defineType } from 'sanity'
+import { defineArrayMember, defineField, defineType } from 'sanity'
 
 export default defineType({
   name: 'oneColumn',
@@ -8,9 +8,20 @@ export default defineType({
   icon: BlockElementIcon,
   fields: [
     defineField({
-      type: 'string',
-      name: 'title',
-      title: 'Title',
+      name: 'body',
+      title: 'Body',
+      type: 'array',
+      of: [
+        defineArrayMember({
+          type: 'block',
+          styles: [],
+          lists: [],
+          marks: {
+            annotations: [],
+            decorators: [{ title: 'Strong', value: 'strong' }],
+          },
+        }),
+      ],
     }),
     defineField({
       type: 'image',

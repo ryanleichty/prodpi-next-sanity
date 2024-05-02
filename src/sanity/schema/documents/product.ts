@@ -161,6 +161,37 @@ export default defineType({
       group: 'editorial',
       of: [
         defineArrayMember({
+          type: 'block',
+          styles: [
+            { title: 'Normal', value: 'normal' },
+            { title: 'Heading 2', value: 'h2' },
+            { title: 'Heading 3', value: 'h3' },
+            { title: 'Heading 4', value: 'h4' },
+          ],
+          lists: [],
+          marks: {
+            annotations: [
+              {
+                name: 'internalLink',
+                type: 'object',
+                title: 'Internal link',
+                fields: [
+                  {
+                    name: 'reference',
+                    type: 'reference',
+                    title: 'Reference',
+                    to: [{ type: 'product' }],
+                  },
+                ],
+              },
+            ],
+            decorators: [
+              { title: 'Strong', value: 'strong' },
+              { title: 'Emphasis', value: 'em' },
+            ],
+          },
+        }),
+        defineArrayMember({
           type: 'oneColumn',
         }),
         defineArrayMember({
@@ -168,6 +199,17 @@ export default defineType({
         }),
         defineArrayMember({
           type: 'threeColumn',
+        }),
+      ],
+    }),
+    defineField({
+      name: 'test',
+      title: 'Test',
+      type: 'array',
+      group: 'editorial',
+      of: [
+        defineArrayMember({
+          type: 'block',
         }),
       ],
     }),

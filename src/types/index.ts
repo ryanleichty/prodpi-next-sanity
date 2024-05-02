@@ -66,10 +66,17 @@ export interface ProductPayload {
     headline?: string
   }
   summary?: PortableTextBlock[]
-  imageGallery: Image[]
+  imageGallery: {
+    _key: string
+    url: string
+    width: number
+    height: number
+    alt?: string
+    caption?: string
+  }[]
   printMethods?: PrintMethod[]
   productAttributes?: ProductAttribute[]
-  blocks?: string
+  blocks?: PortableTextBlock[]
   editor?: {
     id?: string
     slug?: string
