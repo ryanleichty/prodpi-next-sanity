@@ -17,9 +17,7 @@ export async function generateMetadata(
 
   return {
     title: product?.title,
-    description: product?.description
-      ? product?.description
-      : (await parent).description,
+    description: product?.description ? product?.description : (await parent).description,
   }
 }
 

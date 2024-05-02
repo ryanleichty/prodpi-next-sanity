@@ -34,9 +34,12 @@ export interface PrintMethod {
 }
 
 export interface ProductAttribute {
+  _key: string
   title?: string
   description?: string
-  image?: Image[]
+  image?: {
+    url: string
+  }
 }
 
 // Page payloads

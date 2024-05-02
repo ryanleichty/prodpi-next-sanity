@@ -9,14 +9,14 @@ type Props = {
 export default function ProductBlocks({ value: blocks }: Props) {
   const textComponents: PortableTextComponents = {
     block: {
-      h1: ({ children }) => {
-        return <h1>{children}</h1>
-      },
       h2: ({ children }) => {
         return <h2 className="text-3xl">{children}</h2>
       },
       h3: ({ children }) => {
         return <h3>{children}</h3>
+      },
+      h4: ({ children }) => {
+        return <h4>{children}</h4>
       },
       normal: ({ children }) => {
         return <p>{children}</p>

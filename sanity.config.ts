@@ -7,7 +7,6 @@ import { schemaTypes } from '@/sanity/schema'
 import home from '@/sanity/schema/singletons/home'
 import settings from '@/sanity/schema/singletons/settings'
 import { defaultDocumentNode, structure } from '@/sanity/structure'
-import { DashboardIcon, EyeOpenIcon } from '@sanity/icons'
 import { visionTool } from '@sanity/vision'
 import { defineConfig } from 'sanity'
 import { media } from 'sanity-plugin-media'
@@ -24,13 +23,11 @@ export default defineConfig({
   },
   plugins: [
     structureTool({
-      icon: DashboardIcon,
       structure,
       defaultDocumentNode,
     }),
     media(),
     presentationTool({
-      icon: EyeOpenIcon,
       locate,
       previewUrl: {
         draftMode: {

@@ -10,9 +10,7 @@ import localFont from 'next/font/local'
 import { draftMode } from 'next/headers'
 import { Suspense } from 'react'
 
-const LiveVisualEditing = dynamic(
-  () => import('@/sanity/loader/LiveVisualEditing'),
-)
+const LiveVisualEditing = dynamic(() => import('@/sanity/loader/LiveVisualEditing'))
 
 const gtsuper = localFont({
   src: [
@@ -45,9 +43,7 @@ export async function generateMetadata(): Promise<Metadata> {
           default: homePage.title || 'Personal website',
         }
       : undefined,
-    description: homePage?.overview
-      ? toPlainText(homePage.overview)
-      : undefined,
+    description: homePage?.overview ? toPlainText(homePage.overview) : undefined,
     openGraph: {
       images: ogImage ? [ogImage] : [],
     },
@@ -58,11 +54,7 @@ export const viewport: Viewport = {
   themeColor: 'black',
 }
 
-export default async function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={gtsuper.variable}>
       <head>

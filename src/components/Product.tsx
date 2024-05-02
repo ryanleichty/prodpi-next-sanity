@@ -6,7 +6,7 @@ import { StudioPathLike } from '@sanity/react-loader'
 
 type Props = {
   product: ProductPayload | null
-  encodeDataAttribute: (path: StudioPathLike) => string | undefined
+  encodeDataAttribute?: (path: StudioPathLike) => string | undefined
 }
 
 export default function Product({ product, encodeDataAttribute }: Props) {
@@ -36,7 +36,6 @@ export default function Product({ product, encodeDataAttribute }: Props) {
                     alt={image.alt}
                     width={image.width}
                     height={image.height}
-                    data-sanity={encodeDataAttribute?.(['imageGallery'])}
                   />
                 ))}
               </div>
@@ -80,9 +79,10 @@ export default function Product({ product, encodeDataAttribute }: Props) {
         <section>
           <h2 className="font-serif text-sm italic">Why we like it</h2>
           <div className="flex gap-8">
-            {productAttributes?.map(({ _id, title, description, image }) => (
-              <div key={_id} className="bg-sand px-10 py-12 text-center">
-                <img className="mx-auto mb-6 size-12" src={image.url} />
+            {productAttributes?.map(({ _key, title, description, image }) => (
+              <div key={_key} className="bg-sand px-10 py-12 text-center">
+                {/* eslint-disable-next-line */}
+                {image && <img className="mx-auto mb-6 size-12" src={image.url} />}
                 <h3 className="font-sans-wide text-xl">{title}</h3>
                 <p className="mt-2">{description}</p>
               </div>

@@ -170,21 +170,7 @@ export default defineType({
           ],
           lists: [],
           marks: {
-            annotations: [
-              {
-                name: 'internalLink',
-                type: 'object',
-                title: 'Internal link',
-                fields: [
-                  {
-                    name: 'reference',
-                    type: 'reference',
-                    title: 'Reference',
-                    to: [{ type: 'product' }],
-                  },
-                ],
-              },
-            ],
+            annotations: [],
             decorators: [
               { title: 'Strong', value: 'strong' },
               { title: 'Emphasis', value: 'em' },
@@ -199,17 +185,6 @@ export default defineType({
         }),
         defineArrayMember({
           type: 'threeColumn',
-        }),
-      ],
-    }),
-    defineField({
-      name: 'test',
-      title: 'Test',
-      type: 'array',
-      group: 'editorial',
-      of: [
-        defineArrayMember({
-          type: 'block',
         }),
       ],
     }),

@@ -1,6 +1,16 @@
-import { PortableText, PortableTextComponents } from 'next-sanity'
+import { PortableText, PortableTextBlock, PortableTextComponents } from 'next-sanity'
 
-export function OneColumn({ body, image }) {
+type Props = {
+  body?: PortableTextBlock[]
+  image?: {
+    url: string
+    width: number
+    height: number
+    alt?: string
+  }
+}
+
+export function OneColumn({ body, image }: Props) {
   const components: PortableTextComponents = {
     block: {
       normal: ({ children }) => {

@@ -34,12 +34,12 @@ export const PRODUCT_QUERY = groq`
     description,
     productCategory->{
       title,
-      slug,
+      "slug": slug.current,
       headline,
     },
     summary,
     imageGallery[]{
-      "_key": asset->_key,
+      _key,
       "url": asset->url,
       "width": asset->metadata.dimensions.width,
       "height": asset->metadata.dimensions.height,
@@ -47,12 +47,11 @@ export const PRODUCT_QUERY = groq`
       caption,
     },
     printMethods,
-    productAttributes[]->{
-      _id,
-      title,
-      description,
-      image {
-        "id": asset->_id,
+    productAttributes[]{
+      _key,
+      "title": @->title,
+      "description": @->description,
+      "image": @->image{
         "url": asset->url,
       },
     },
