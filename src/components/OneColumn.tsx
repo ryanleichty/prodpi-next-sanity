@@ -1,16 +1,12 @@
-import { PortableText, PortableTextBlock, PortableTextComponents } from 'next-sanity'
+import { OneColumnBlockData, PageData } from '@/types'
+import { PortableText, PortableTextComponents, createDataAttribute } from 'next-sanity'
 
 type Props = {
-  body?: PortableTextBlock[]
-  image?: {
-    url: string
-    width: number
-    height: number
-    alt?: string
-  }
+  page: PageData
+  block: OneColumnBlockData
 }
 
-export function OneColumn({ body, image }: Props) {
+export function OneColumn({ page: data, block }: Props) {
   const components: PortableTextComponents = {
     block: {
       normal: ({ children }) => {
@@ -24,22 +20,30 @@ export function OneColumn({ body, image }: Props) {
     },
   }
 
+  const attr = createDataAttribute({
+    id: data._id,
+    type: data._type,
+  })
+
   return (
-    <section className="relative flex flex-col items-center">
-      {image && (
+    <section
+      className="relative flex flex-col items-center"
+      data-sanity={attr(`blocks[_key=="${block._key}"]`)}
+    >
+      {block.image && (
         // eslint-disable-next-line
         <img
           className="aspect-video h-full w-full object-cover"
-          src={image.url}
-          alt={image.alt}
-          width={image.width}
-          height={image.height}
+          src={block.image.url}
+          alt={block.image.alt}
+          width={block.image.width}
+          height={block.image.height}
         />
       )}
-      {body && (
+      {block.body && (
         <div className="absolute max-w-screen-sm p-16 text-center">
           <div data-sanity-edit-target>
-            <PortableText value={body} components={components} />
+            <PortableText value={block.body} components={components} />
           </div>
         </div>
       )}

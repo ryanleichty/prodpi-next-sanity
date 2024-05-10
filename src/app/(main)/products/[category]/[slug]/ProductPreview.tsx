@@ -1,6 +1,6 @@
 'use client'
 
-import Product from '@/components/Product'
+import { Product } from './Product'
 import { PRODUCT_QUERY } from '@/sanity/lib/queries'
 import { ProductPayload } from '@/types'
 import { QueryResponseInitial } from '@sanity/react-loader'

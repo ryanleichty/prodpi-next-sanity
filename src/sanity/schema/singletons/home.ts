@@ -23,6 +23,22 @@ export default defineType({
       rows: 5, // default: 10
       validation: (rule) => rule.max(TEXT_LENGTH_MD),
     }),
+    defineField({
+      name: 'blocks',
+      title: 'Blocks',
+      type: 'array',
+      of: [
+        defineArrayMember({
+          type: 'oneColumn',
+        }),
+        defineArrayMember({
+          type: 'twoColumn',
+        }),
+        defineArrayMember({
+          type: 'threeColumn',
+        }),
+      ],
+    }),
   ],
   preview: {
     prepare() {

@@ -4,7 +4,7 @@ import * as queryStore from '@sanity/react-loader'
 import { draftMode } from 'next/headers'
 
 import { client } from '@/sanity/lib/client'
-import { homePageQuery, pagesBySlugQuery, PRODUCT_QUERY, settingsQuery } from '@/sanity/lib/queries'
+import { HOME_QUERY, pagesBySlugQuery, PRODUCT_QUERY, SETTINGS_QUERY } from '@/sanity/lib/queries'
 import { token } from '@/sanity/lib/token'
 import { HomePagePayload, PagePayload, ProductPayload, SettingsPayload } from '@/types'
 
@@ -52,18 +52,14 @@ export const loadQuery = ((query, params = {}, options = {}) => {
 
 export function loadSettings() {
   return loadQuery<SettingsPayload>(
-    settingsQuery,
+    SETTINGS_QUERY,
     {},
     { next: { tags: ['settings', 'home', 'page', 'project'] } },
   )
 }
 
 export function loadHomePage() {
-  return loadQuery<HomePagePayload | null>(
-    homePageQuery,
-    {},
-    { next: { tags: ['home', 'project'] } },
-  )
+  return loadQuery<HomePagePayload | null>(HOME_QUERY, {}, { next: { tags: ['home', 'project'] } })
 }
 
 export function loadProduct(slug: string) {
@@ -71,13 +67,5 @@ export function loadProduct(slug: string) {
     PRODUCT_QUERY,
     { slug },
     { next: { tags: [`product:${slug}`] } },
-  )
-}
-
-export function loadPage(slug: string) {
-  return loadQuery<PagePayload | null>(
-    pagesBySlugQuery,
-    { slug },
-    { next: { tags: [`page:${slug}`] } },
   )
 }

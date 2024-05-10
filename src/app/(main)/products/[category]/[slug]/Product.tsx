@@ -1,6 +1,6 @@
 import { ProductPayload } from '@/types'
 import { cx } from '@/utils'
-import ProductBlocks from './ProductBlocks'
+import ProductBlocks from '@/components/ProductBlocks'
 import { PortableText, createDataAttribute } from 'next-sanity'
 import { EncodeDataAttributeCallback } from '@sanity/react-loader'
 import { vercelStegaCleanAll } from '@sanity/client/stega'
@@ -10,7 +10,7 @@ type Props = {
   encodeDataAttribute?: EncodeDataAttributeCallback
 }
 
-export default function Product({ product, encodeDataAttribute }: Props) {
+export function Product({ product, encodeDataAttribute }: Props) {
   // Default to an empty object to allow previews on non-existent documents
   const {
     _id,
@@ -41,8 +41,8 @@ export default function Product({ product, encodeDataAttribute }: Props) {
               {vercelStegaCleanAll(productCategory.title)}
             </div>
           )}
-          <h1 className="mb-8 mt-4 font-sans-wide text-4xl">{title}</h1>
-          <p className="text-sm">{description}</p>
+          {title && <h1 className="mb-8 mt-4 font-sans-wide text-4xl">{title}</h1>}
+          {description && <p className="text-sm">{description}</p>}
         </div>
         <div>
           {imageGallery && imageGallery.length > 0 && (
@@ -101,6 +101,7 @@ export default function Product({ product, encodeDataAttribute }: Props) {
           )}
         </div>
       </section>
+
       {productAttributes?.length && (
         <section>
           <h2 className="font-serif text-sm italic">Why we like it</h2>
@@ -119,7 +120,7 @@ export default function Product({ product, encodeDataAttribute }: Props) {
 
       {blocks && (
         <div className="my-16 space-y-8">
-          <ProductBlocks value={blocks} />
+          <ProductBlocks page={{ _id, _type }} blocks={blocks} />
         </div>
       )}
     </div>

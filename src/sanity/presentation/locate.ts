@@ -10,7 +10,7 @@ export const locate: DocumentLocationResolver = (params, context) => {
     } satisfies DocumentLocationsState
   }
 
-  if (params.type === 'home' || params.type === 'page' || params.type === 'project') {
+  if (params.type === 'home' || params.type === 'page' || params.type === 'product') {
     const doc$ = context.documentStore.listenQuery(
       `*[_id==$id || references($id)]{_type,slug,title}`,
       params,
@@ -23,9 +23,11 @@ export const locate: DocumentLocationResolver = (params, context) => {
         }[]
       | null
     >
+
     return doc$.pipe(
       map((docs) => {
         const isReferencedBySettings = docs?.some((doc) => doc._type === 'settings')
+
         switch (params.type) {
           case 'home':
             return isReferencedBySettings
@@ -59,7 +61,7 @@ export const locate: DocumentLocationResolver = (params, context) => {
                 ? 'The top menu is linking to this page'
                 : "The top menu isn't linking to this page. It can still be accessed if the visitor knows the URL.",
             } satisfies DocumentLocationsState
-          case 'project':
+          case 'product':
             return {
               locations: docs
                 ?.map((doc) => {

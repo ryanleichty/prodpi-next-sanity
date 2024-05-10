@@ -1,62 +1,23 @@
 import type { PortableTextBlock } from 'next-sanity'
 import type { Image } from 'sanity'
 
-export interface MenuItem {
-  _type: string
-  slug?: string
-  title?: string
-}
-
-export interface MilestoneItem {
-  description?: string
-  duration?: {
-    start?: string
-    end?: string
-  }
-  image?: Image
-  tags?: string[]
-  title?: string
-}
-
-export interface ShowcaseProject {
-  _type: string
-  coverImage?: Image
-  overview?: PortableTextBlock[]
-  slug?: string
-  tags?: string[]
-  title?: string
-}
-
-export interface PrintMethod {
-  title?: string
-  description?: string
-  summary?: PortableTextBlock[]
-}
-
-export interface ProductAttribute {
-  _key: string
-  title?: string
-  description?: string
-  image?: {
-    url: string
-  }
+export interface SettingsPayload {
+  ogImage?: Image
 }
 
 // Page payloads
 
-export interface HomePagePayload {
-  footer?: PortableTextBlock[]
-  overview?: PortableTextBlock[]
-  showcaseProjects?: ShowcaseProject[]
-  title?: string
+export type PageData = {
+  _id: string | undefined
+  _type: string | undefined
 }
 
-export interface PagePayload {
-  body?: PortableTextBlock[]
-  name?: string
-  overview?: PortableTextBlock[]
+export interface HomePagePayload {
+  _id: string
+  _type: string
   title?: string
-  slug?: string
+  description?: string
+  blocks: any
 }
 
 export interface ProductPayload {
@@ -92,23 +53,60 @@ export interface ProductPayload {
   }
 }
 
-export interface ProjectPayload {
-  client?: string
-  coverImage?: Image
-  description?: PortableTextBlock[]
-  duration?: {
-    start?: string
-    end?: string
-  }
-  overview?: PortableTextBlock[]
-  site?: string
-  slug: string
-  tags?: string[]
+export interface PrintMethod {
   title?: string
+  description?: string
+  summary?: PortableTextBlock[]
 }
 
-export interface SettingsPayload {
-  footer?: PortableTextBlock[]
-  menuItems?: MenuItem[]
-  ogImage?: Image
+export interface ProductAttribute {
+  _key: string
+  title?: string
+  description?: string
+  image?: {
+    url: string
+  }
+}
+
+// Blocks
+
+export type ProductBlocksData = Array<
+  PortableTextBlock[] | ThreeColumnBlockData | OneColumnBlockData
+>
+
+export type OneColumnBlockData = {
+  _type: string
+  _key: string
+  body?: PortableTextBlock[]
+  image?: {
+    url: string
+    width: number
+    height: number
+    alt?: string
+  }
+}
+
+export type ThreeColumnBlockData = {
+  _type: string
+  _key: string
+  columns: Array<ImageColumnData | TextColumnData>
+}
+
+export type ImageColumnData = {
+  _type: 'imageColumn'
+  _key: string
+  image?: {
+    url: string
+    width: number
+    height: number
+    alt?: string
+  }
+}
+
+export type TextColumnData = {
+  _type: 'textColumn'
+  _key: string
+  body?: PortableTextBlock[]
+  eyebrow?: string
+  textSize?: string
 }

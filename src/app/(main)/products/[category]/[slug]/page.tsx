@@ -1,10 +1,10 @@
-import Product from '@/components/Product'
+import { Product } from './Product'
 import { generateStaticSlugs } from '@/sanity/loader/generateStaticSlugs'
 import { loadProduct } from '@/sanity/loader/loadQuery'
 import type { Metadata, ResolvingMetadata } from 'next'
 import dynamic from 'next/dynamic'
 import { draftMode } from 'next/headers'
-const ProductPreview = dynamic(() => import('@/components/ProductPreview'))
+const ProductPreview = dynamic(() => import('./ProductPreview'))
 
 type Props = {
   params: { slug: string }

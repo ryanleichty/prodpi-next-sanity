@@ -1,12 +1,14 @@
 import { PortableText, type PortableTextBlock, type PortableTextComponents } from 'next-sanity'
 import { ThreeColumn } from './ThreeColumn'
 import { OneColumn } from './OneColumn'
+import { PageData, ProductBlocksData } from '@/types'
 
 type Props = {
-  value: PortableTextBlock[]
+  page: PageData
+  blocks: PortableTextBlock[]
 }
 
-export default function ProductBlocks({ value: blocks }: Props) {
+export default function ProductBlocks({ page: data, blocks }: Props) {
   const textComponents: PortableTextComponents = {
     block: {
       h2: ({ children }) => {
@@ -40,19 +42,19 @@ export default function ProductBlocks({ value: blocks }: Props) {
   const customComponents: PortableTextComponents = {
     types: {
       oneColumn: ({ value }) => {
-        return <OneColumn body={value?.body} image={value?.image} />
+        return <OneColumn page={data} block={value} />
       },
       textColumn: ({ value }) => {
         return <section>Text column</section>
       },
       threeColumn: ({ value }) => {
-        return <ThreeColumn columns={value?.columns} />
+        return <ThreeColumn page={data} block={value} />
       },
     },
   }
 
   let textBlocks: PortableTextBlock[] = []
-  return blocks.map((block, i) => {
+  return blocks?.map((block, i) => {
     // Group text blocks together (p, h1, h2, etc.)
     if (block._type === 'block') {
       textBlocks.push(block)

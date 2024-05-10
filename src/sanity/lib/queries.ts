@@ -1,128 +1,97 @@
 import { groq } from 'next-sanity'
 
-export const homePageQuery = groq`
-  *[_type == "home"][0]{
-    _id,
-    overview,
-    showcaseProjects[]->{
+const ONE_COLUMN_BLOCK_QUERY = groq`_type == 'oneColumn' => {
+  _type,
+  _key,
+  body,
+  image {
+    "url": asset->url,
+    alt,
+    caption,
+    "width": asset->metadata.dimensions.width,
+    "height": asset->metadata.dimensions.height,
+  },
+}`
+
+const TWO_COLUMN_BLOCK_QUERY = groq`_type == 'threeColumn' => {
+  _type,
+  _key,
+  columns[]{
+    _type == 'textColumn' => {
       _type,
-      coverImage,
-      overview,
-      "slug": slug.current,
-      tags,
-      title,
-    },
-    title,
-  }
-`
-
-export const pagesBySlugQuery = groq`
-  *[_type == "page" && slug.current == $slug][0] {
-    _id,
-    body,
-    overview,
-    title,
-    "slug": slug.current,
-  }
-`
-
-export const PRODUCT_QUERY = groq`
-  *[_type == "product" && slug.current == $slug][0] {
-    _id,
-    _type,
-    title,
-    "slug": slug.current,
-    description,
-    productCategory->{
-      title,
-      "slug": slug.current,
-      headline,
-    },
-    summary,
-    imageGallery[]{
       _key,
-      "url": asset->url,
-      "width": asset->metadata.dimensions.width,
-      "height": asset->metadata.dimensions.height,
-      alt,
-      caption,
+      eyebrow,
+      body,
+      textSize,
     },
-    printMethods,
-    productAttributes[]{
+    _type == 'imageColumn' => {
+      _type,
       _key,
-      "title": @->title,
-      "description": @->description,
-      "image": @->image{
+      image {
         "url": asset->url,
+        "width": asset->metadata.dimensions.width,
+        "height": asset->metadata.dimensions.height,
+        alt,
+        caption,
       },
-    },
-    blocks[]{
-      ...,
-      _type == 'oneColumn' => {
-        body,
-        image {
-          "url": asset->url,
-          alt,
-          caption,
-          "width": asset->metadata.dimensions.width,
-          "height": asset->metadata.dimensions.height,
-        },
-      },
-      _type == 'threeColumn' => {
-        columns[]{
-          _type == 'textColumn' => {
-            ...,
-            eyebrow,
-            body,
-            textSize,
-          },
-          _type == 'imageColumn' => {
-            ...,
-            image {
-              "url": asset->url,
-              alt,
-              caption,
-              "width": asset->metadata.dimensions.width,
-              "height": asset->metadata.dimensions.height,
-            },
-          },
-        }
-      },
-    },
-    editor {
-      id,
-      slug,
-    },
-    seo {
-      title,
-      description,
     },
   }
-`
+}`
 
-export const projectBySlugQuery = groq`
-  *[_type == "project" && slug.current == $slug][0] {
-    _id,
-    client,
-    coverImage,
-    description,
-    duration,
-    overview,
-    site,
-    "slug": slug.current,
-    tags,
+export const HOME_QUERY = groq`*[_type == "home"][0]{
+  _id,
+  _type,
+  title,
+  description,
+  blocks[]{
+    ${ONE_COLUMN_BLOCK_QUERY},
+    ${TWO_COLUMN_BLOCK_QUERY},
+  },
+}`
+
+export const PRODUCT_QUERY = groq`*[ _type == "product" && slug.current == $slug ][0]{
+  _id,
+  _type,
+  title,
+  "slug": slug.current,
+  description,
+  productCategory->{
     title,
-  }
-`
-
-export const settingsQuery = groq`
-  *[_type == "settings"][0]{
-    footer,
-    menuItems[]->{
-      _type,
-      "slug": slug.current,
-      title
+    "slug": slug.current,
+    headline,
+  },
+  summary,
+  imageGallery[]{
+    _key,
+    "url": asset->url,
+    "width": asset->metadata.dimensions.width,
+    "height": asset->metadata.dimensions.height,
+    alt,
+    caption,
+  },
+  printMethods,
+  productAttributes[]{
+    _key,
+    "title": @->title,
+    "description": @->description,
+    "image": @->image{
+      "url": asset->url,
     },
-    ogImage,
-  }
-`
+  },
+  blocks[]{
+    ${ONE_COLUMN_BLOCK_QUERY},
+    ${TWO_COLUMN_BLOCK_QUERY},
+  },
+  editor {
+    id,
+    slug,
+  },
+  seo {
+    title,
+    description,
+  },
+}`
+
+export const SETTINGS_QUERY = groq`*[_type == "settings"][0]{
+  ogImage,
+}`
