@@ -10,14 +10,9 @@ import {
 import { type StructureResolver } from 'sanity/structure'
 
 export const singletonPlugin = (types: string[]) => {
-  const resolveNewDocumentOptions: NewDocumentOptionsResolver = (
-    prev,
-    { creationContext },
-  ) => {
+  const resolveNewDocumentOptions: NewDocumentOptionsResolver = (prev, { creationContext }) => {
     if (creationContext.type === 'global') {
-      return prev.filter(
-        (templateItem) => !types.includes(templateItem.templateId),
-      )
+      return prev.filter((templateItem) => !types.includes(templateItem.templateId))
     }
 
     return prev
@@ -47,9 +42,7 @@ export const singletonPlugin = (types: string[]) => {
 
 // The StructureResolver is how we're changing the structureTool structure to
 // linking to document (named Singleton) like how "Home" is handled.
-export const pageStructure = (
-  typeDefArray: DocumentDefinition[],
-): StructureResolver => {
+export const pageStructure = (typeDefArray: DocumentDefinition[]): StructureResolver => {
   return (S) => {
     // Goes through all of the singletons that were provided and translates them into something the
     // structureTool can understand
@@ -57,18 +50,12 @@ export const pageStructure = (
       return S.listItem()
         .title(typeDef.title!)
         .icon(typeDef.icon)
-        .child(
-          S.editor()
-            .id(typeDef.name)
-            .schemaType(typeDef.name)
-            .documentId(typeDef.name),
-        )
+        .child(S.editor().id(typeDef.name).schemaType(typeDef.name).documentId(typeDef.name))
     })
 
     // The default root list items (except custom ones)
     const defaultListItems = S.documentTypeListItems().filter(
-      (listItem) =>
-        !typeDefArray.find((singleton) => singleton.name === listItem.getId()),
+      (listItem) => !typeDefArray.find((singleton) => singleton.name === listItem.getId()),
     )
 
     return S.list()

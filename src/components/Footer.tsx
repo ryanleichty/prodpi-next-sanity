@@ -47,8 +47,8 @@ export default function Footer({ className, ...props }: Props) {
             <div>
               <h2 className="mb-4 font-sans-wide">About Us</h2>
               <p>
-                We’re making professional printing available to more people from
-                many creative backgrounds.
+                We’re making professional printing available to more people from many creative
+                backgrounds.
               </p>
               <Link className="block py-0.5" href="/about-us">
                 Learn More →
@@ -68,10 +68,7 @@ export default function Footer({ className, ...props }: Props) {
                   </a>
                 </li>
                 <li>
-                  <a
-                    className="inline-block py-0.5"
-                    href="mailto:support@prodpi.com"
-                  >
+                  <a className="inline-block py-0.5" href="mailto:support@prodpi.com">
                     support@prodpi.com
                   </a>
                 </li>

@@ -4,15 +4,7 @@ import React from 'react'
 import { cva } from '@/utils'
 
 function Button(
-  {
-    children,
-    className,
-    icon,
-    size = 'lg',
-    shape = 'square',
-    variant = 'primary',
-    ...props
-  },
+  { children, className, icon, size = 'lg', shape = 'square', variant = 'primary', ...props },
   ref,
 ) {
   const button = cva({
@@ -31,11 +23,7 @@ function Button(
   })
 
   return 'href' in props ? (
-    <Link
-      {...props}
-      className={button({ intent: variant, size, shape, className })}
-      ref={ref}
-    >
+    <Link {...props} className={button({ intent: variant, size, shape, className })} ref={ref}>
       <TouchTarget>{children}</TouchTarget>
     </Link>
   ) : (

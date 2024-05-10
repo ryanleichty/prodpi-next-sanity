@@ -14,26 +14,13 @@ function useAfterHydration<Snapshot>(
   getSnapshot: () => Snapshot,
   serverSnapshot: Snapshot,
 ): Snapshot {
-  return useSyncExternalStore<Snapshot>(
-    subscribe,
-    getSnapshot,
-    () => serverSnapshot,
-  )
+  return useSyncExternalStore<Snapshot>(subscribe, getSnapshot, () => serverSnapshot)
 }
 
 export default memo(function IntroTemplate() {
-  const studioURL = useAfterHydration(
-    () => `${location.origin}${studioUrl}`,
-    null,
-  )
-  const isLocalHost = useAfterHydration(
-    () => window.location.hostname === 'localhost',
-    false,
-  )
-  const hasUTMtags = useAfterHydration(
-    () => window.location.search.includes('utm'),
-    false,
-  )
+  const studioURL = useAfterHydration(() => `${location.origin}${studioUrl}`, null)
+  const isLocalHost = useAfterHydration(() => window.location.hostname === 'localhost', false)
+  const hasUTMtags = useAfterHydration(() => window.location.search.includes('utm'), false)
   const pathname = usePathname()
 
   const hasEnvFile = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
@@ -69,15 +56,10 @@ export default memo(function IntroTemplate() {
         </div>
 
         <div className="mx-6 md:mx-0 md:mr-24">
-          <h2 className="mb-5 text-xl font-medium tracking-tight md:text-5xl">
-            Next steps
-          </h2>
+          <h2 className="mb-5 text-xl font-medium tracking-tight md:text-5xl">Next steps</h2>
 
           {!hasEnvFile && (
-            <div
-              className="mb-6 rounded-lg bg-yellow-100 p-4 text-sm text-yellow-700"
-              role="alert"
-            >
+            <div className="mb-6 rounded-lg bg-yellow-100 p-4 text-sm text-yellow-700" role="alert">
               {`It looks like you haven't set up the local environment variables.`}
               <p>
                 <a
@@ -99,14 +81,12 @@ export default memo(function IntroTemplate() {
               circleTitle="1"
               element={
                 <div>
-                  <div className="col-span-2 mb-2 mt-1 font-medium">
-                    Create a schema
-                  </div>
+                  <div className="col-span-2 mb-2 mt-1 font-medium">Create a schema</div>
 
                   {isLocalHost ? (
                     <div className="text-xs text-gray-700">
                       Start editing your content structure in
-                      <div className="bg-slate-200 w-fit px-2">
+                      <div className="w-fit bg-slate-200 px-2">
                         <pre>sanity.config.ts</pre>
                       </div>
                     </div>
@@ -149,10 +129,7 @@ export default memo(function IntroTemplate() {
                   </div>
                   <div className="text-xs text-gray-700">
                     Your Sanity Studio is deployed at
-                    <Link
-                      className="mx-1 underline hover:text-blue-800"
-                      href={studioURL}
-                    >
+                    <Link className="mx-1 underline hover:text-blue-800" href={studioURL}>
                       {studioURL}
                     </Link>
                   </div>
@@ -173,27 +150,16 @@ export default memo(function IntroTemplate() {
               circleTitle="3"
               element={
                 <div>
-                  <div className="col-span-2 mb-3 mt-1 font-medium">
-                    Learn more and get help
-                  </div>
+                  <div className="col-span-2 mb-3 mt-1 font-medium">Learn more and get help</div>
                   <ul>
                     <li className="mb-2">
-                      <BlueLink
-                        href="https://www.sanity.io/docs"
-                        text="Documentation for Sanity"
-                      />
+                      <BlueLink href="https://www.sanity.io/docs" text="Documentation for Sanity" />
                     </li>
                     <li className="mb-2">
-                      <BlueLink
-                        href="https://nextjs.org/docs"
-                        text="Documentation for Next.js"
-                      />
+                      <BlueLink href="https://nextjs.org/docs" text="Documentation for Next.js" />
                     </li>
                     <li className="mb-2">
-                      <BlueLink
-                        href="https://slack.sanity.io/"
-                        text="Join the Sanity Community"
-                      />
+                      <BlueLink href="https://slack.sanity.io/" text="Join the Sanity Community" />
                     </li>
                   </ul>
                 </div>
@@ -209,13 +175,7 @@ export default memo(function IntroTemplate() {
   )
 })
 
-function Box({
-  circleTitle,
-  element,
-}: {
-  circleTitle: string
-  element: JSX.Element
-}) {
+function Box({ circleTitle, element }: { circleTitle: string; element: JSX.Element }) {
   return (
     <li className="mt-2 grid grid-flow-col grid-rows-1 place-content-start gap-3">
       <div className="row-span-3 select-none">
@@ -242,12 +202,7 @@ function BlueLink({ href, text }: { href: string; text: string }) {
 }
 
 const RemoveBlock = ({ url }: { url: string }) => (
-  <a
-    className="hover:text-blue-800"
-    href={url}
-    target="_blank"
-    rel="noreferrer"
-  >
+  <a className="hover:text-blue-800" href={url} target="_blank" rel="noreferrer">
     How to remove this block?
   </a>
 )

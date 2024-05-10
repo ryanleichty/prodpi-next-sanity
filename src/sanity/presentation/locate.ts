@@ -1,8 +1,5 @@
 import { map, Observable } from 'rxjs'
-import {
-  DocumentLocationResolver,
-  DocumentLocationsState,
-} from 'sanity/presentation'
+import { DocumentLocationResolver, DocumentLocationsState } from 'sanity/presentation'
 import { resolveHref } from '@/sanity/lib/utils'
 
 export const locate: DocumentLocationResolver = (params, context) => {
@@ -13,11 +10,7 @@ export const locate: DocumentLocationResolver = (params, context) => {
     } satisfies DocumentLocationsState
   }
 
-  if (
-    params.type === 'home' ||
-    params.type === 'page' ||
-    params.type === 'project'
-  ) {
+  if (params.type === 'home' || params.type === 'page' || params.type === 'project') {
     const doc$ = context.documentStore.listenQuery(
       `*[_id==$id || references($id)]{_type,slug,title}`,
       params,
@@ -32,18 +25,14 @@ export const locate: DocumentLocationResolver = (params, context) => {
     >
     return doc$.pipe(
       map((docs) => {
-        const isReferencedBySettings = docs?.some(
-          (doc) => doc._type === 'settings',
-        )
+        const isReferencedBySettings = docs?.some((doc) => doc._type === 'settings')
         switch (params.type) {
           case 'home':
             return isReferencedBySettings
               ? ({
                   locations: [
                     {
-                      title:
-                        docs?.find((doc) => doc._type === 'home')?.title ||
-                        'Home',
+                      title: docs?.find((doc) => doc._type === 'home')?.title || 'Home',
                       href: resolveHref(params.type)!,
                     },
                   ],

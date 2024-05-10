@@ -38,10 +38,7 @@ export default function Header({ className, ...props }: Props) {
             <Cart />
           </div>
         </div>
-        <NavigationMenu.Root
-          value={isProductMenuOpen}
-          onValueChange={setIsProductMenuOpen}
-        >
+        <NavigationMenu.Root value={isProductMenuOpen} onValueChange={setIsProductMenuOpen}>
           <NavigationMenu.List className="scrollbar-hidden flex h-16 items-center overflow-x-auto border-b border-black/20 lg:justify-center">
             <div className="mr-2 font-sans-wide text-[10px] uppercase leading-snug sm:hidden">
               Quick shop
@@ -58,10 +55,7 @@ export default function Header({ className, ...props }: Props) {
                         {item?.children.map((childItem) => {
                           if (childItem.type === 'image') {
                             return (
-                              <NavigationMenuLink
-                                key={childItem?.label}
-                                href={childItem?.url}
-                              >
+                              <NavigationMenuLink key={childItem?.label} href={childItem?.url}>
                                 {childItem?.image && (
                                   <>
                                     <Image
@@ -71,19 +65,14 @@ export default function Header({ className, ...props }: Props) {
                                       height={200}
                                       alt=""
                                     />
-                                    <p className="mt-1 text-sm">
-                                      {childItem?.label}
-                                    </p>
+                                    <p className="mt-1 text-sm">{childItem?.label}</p>
                                   </>
                                 )}
                               </NavigationMenuLink>
                             )
                           } else {
                             return (
-                              <div
-                                key={childItem?.label}
-                                className="border-l pl-4"
-                              >
+                              <div key={childItem?.label} className="border-l pl-4">
                                 <h2 className="mb-2 font-sans-wide text-xs uppercase text-brass">
                                   {childItem?.label}
                                 </h2>
@@ -131,9 +120,7 @@ export default function Header({ className, ...props }: Props) {
   )
 }
 
-type NavigationMenuLinkProps = React.ComponentPropsWithoutRef<
-  typeof NavigationMenu.Link
-> & {
+type NavigationMenuLinkProps = React.ComponentPropsWithoutRef<typeof NavigationMenu.Link> & {
   href: string
 }
 

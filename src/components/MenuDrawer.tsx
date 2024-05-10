@@ -26,16 +26,11 @@ export default function MenuDrawer() {
         <Dialog.Overlay className="fixed inset-0 data-[state=closed]:animate-fadeOut data-[state=open]:animate-fadeIn" />
         <Dialog.Content className="fixed bottom-0 left-0 top-0 w-full max-w-lg bg-surfboard focus:outline-none data-[state=closed]:animate-slideRightExit data-[state=open]:animate-slideRightEnter">
           <Dialog.Title className="sr-only">Menu</Dialog.Title>
-          <Dialog.Description className="sr-only">
-            Description
-          </Dialog.Description>
+          <Dialog.Description className="sr-only">Description</Dialog.Description>
           <div className="container">
             <header className="flex h-20 items-center border-b border-black/20">
               <Dialog.Close asChild>
-                <button
-                  className="-ml-1 flex items-center gap-1"
-                  aria-label="Close Menu"
-                >
+                <button className="-ml-1 flex items-center gap-1" aria-label="Close Menu">
                   <IconClose />
                   <ShiftBy y={-1}>Close Menu</ShiftBy>
                 </button>
