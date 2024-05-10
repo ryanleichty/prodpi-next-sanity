@@ -27,4 +27,9 @@ export default defineType({
       title: 'Image',
     }),
   ],
+  preview: {
+    select: {
+      title: 'title',
+    },
+  },
 })

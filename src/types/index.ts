@@ -60,6 +60,8 @@ export interface PagePayload {
 }
 
 export interface ProductPayload {
+  _id: string
+  _type: string
   title?: string
   slug?: string
   description?: string

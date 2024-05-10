@@ -3,10 +3,7 @@ import home from '@/sanity/schema/singletons/home'
 import settings from '@/sanity/schema/singletons/settings'
 import { DocumentDefinition, SanityDocument } from 'sanity'
 import { Iframe } from 'sanity-plugin-iframe-pane'
-import {
-  DefaultDocumentNodeResolver,
-  StructureResolver,
-} from 'sanity/structure'
+import { DefaultDocumentNodeResolver, StructureResolver } from 'sanity/structure'
 import products from './productStructure'
 
 export const structure: StructureResolver = (S, context) => {
@@ -14,12 +11,7 @@ export const structure: StructureResolver = (S, context) => {
     return S.listItem()
       .title(typeDef.title!)
       .icon(typeDef.icon)
-      .child(
-        S.editor()
-          .id(typeDef.name)
-          .schemaType(typeDef.name)
-          .documentId(typeDef.name),
-      )
+      .child(S.editor().id(typeDef.name).schemaType(typeDef.name).documentId(typeDef.name))
   }
 
   return S.list()
@@ -40,10 +32,7 @@ export const structure: StructureResolver = (S, context) => {
     ])
 }
 
-export const defaultDocumentNode: DefaultDocumentNodeResolver = (
-  S,
-  { schemaType },
-) => {
+export const defaultDocumentNode: DefaultDocumentNodeResolver = (S, { schemaType }) => {
   // Only show preview pane on `product` schema type documents
   switch (schemaType) {
     case `product`:

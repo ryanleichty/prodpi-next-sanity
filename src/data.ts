@@ -69,7 +69,7 @@ export const PRODUCT_MENU: ProductMenu[] = [
           },
           {
             label: 'Deckled Edge Fine Art Prints',
-            url: '/products/prints/deckled-edge-fine-art',
+            url: '/products/prints/deckled-edge-fine-art-prints',
           },
         ],
       },
@@ -83,8 +83,7 @@ export const PRODUCT_MENU: ProductMenu[] = [
         type: 'image',
         label: 'Walnut Frames',
         url: '/products/wall-art/walnut-frames',
-        image:
-          '/images/ProDPI_Easel_Back_Woodland_Frame_Engagement_2022_01.jpg',
+        image: '/images/ProDPI_Easel_Back_Woodland_Frame_Engagement_2022_01.jpg',
       },
       {
         type: 'image',
@@ -106,7 +105,7 @@ export const PRODUCT_MENU: ProductMenu[] = [
           },
           {
             label: 'Frosted Metal Frames',
-            url: '/products/wall-art/metal-frames',
+            url: '/products/wall-art/frosted-metal-frames',
           },
           {
             label: 'Modern Metal Frames',
@@ -123,10 +122,6 @@ export const PRODUCT_MENU: ProductMenu[] = [
           {
             label: 'Ash Frames',
             url: '/products/wall-art/ash-frames',
-          },
-          {
-            label: 'Rustic Wood Frames',
-            url: '/products/wall-art/rustic-wood-frames',
           },
         ],
       },
@@ -151,8 +146,8 @@ export const PRODUCT_MENU: ProductMenu[] = [
             url: '/products/wall-art/wrapped-canvas',
           },
           {
-            label: 'Bamboo Blocks',
-            url: '/products/wall-art/bamboo-blocks',
+            label: 'Bamboo Photo Blocks',
+            url: '/products/wall-art/bamboo-photo-blocks',
           },
           {
             label: 'Photo Blocks',

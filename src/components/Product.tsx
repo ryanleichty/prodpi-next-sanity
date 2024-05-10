@@ -1,43 +1,69 @@
 import { ProductPayload } from '@/types'
 import { cx } from '@/utils'
 import ProductBlocks from './ProductBlocks'
-import { PortableText } from 'next-sanity'
-import { StudioPathLike } from '@sanity/react-loader'
+import { PortableText, createDataAttribute } from 'next-sanity'
+import { EncodeDataAttributeCallback } from '@sanity/react-loader'
+import { vercelStegaCleanAll } from '@sanity/client/stega'
 
 type Props = {
   product: ProductPayload | null
-  encodeDataAttribute?: (path: StudioPathLike) => string | undefined
+  encodeDataAttribute?: EncodeDataAttributeCallback
 }
 
 export default function Product({ product, encodeDataAttribute }: Props) {
   // Default to an empty object to allow previews on non-existent documents
-  const { title, description, productCategory, summary, imageGallery, productAttributes, blocks } =
-    product ?? {}
+  const {
+    _id,
+    _type,
+    title,
+    description,
+    productCategory,
+    summary,
+    imageGallery,
+    productAttributes,
+    blocks,
+  } = product ?? {}
+
+  const attr = createDataAttribute({
+    id: _id,
+    type: _type,
+  })
 
   return (
     <div className="container">
       <section className="grid grid-cols-[320px_1fr] gap-16 py-8">
         <div>
-          <div className="font-sans-wide uppercase tracking-wide text-brass">
-            {productCategory?.title}
-          </div>
+          {productCategory && (
+            <div
+              data-sanity={attr('productCategory')}
+              className="font-sans-wide uppercase tracking-wide text-brass"
+            >
+              {vercelStegaCleanAll(productCategory.title)}
+            </div>
+          )}
           <h1 className="mb-8 mt-4 font-sans-wide text-4xl">{title}</h1>
           <p className="text-sm">{description}</p>
         </div>
         <div>
           {imageGallery && imageGallery.length > 0 && (
             <div>
-              <div className="flex h-[600px] gap-8 overflow-x-auto">
-                {imageGallery.map((image) => (
-                  // eslint-disable-next-line
-                  <img
-                    key={image._key}
-                    src={image.url}
-                    alt={image.alt}
-                    width={image.width}
-                    height={image.height}
-                  />
-                ))}
+              <div
+                className="flex h-[600px] gap-8 overflow-x-auto"
+                data-sanity={attr('imageGallery')}
+              >
+                {imageGallery.map((image, index) => {
+                  return (
+                    // eslint-disable-next-line
+                    <img
+                      className="h-full w-full object-cover"
+                      key={image._key}
+                      src={image.url}
+                      alt={image.alt}
+                      width={image.width}
+                      height={image.height}
+                    />
+                  )
+                })}
               </div>
               <div className="mt-6 flex gap-1">
                 {imageGallery.map((image, i) => (
@@ -78,13 +104,13 @@ export default function Product({ product, encodeDataAttribute }: Props) {
       {productAttributes?.length && (
         <section>
           <h2 className="font-serif text-sm italic">Why we like it</h2>
-          <div className="flex gap-8">
+          <div className="flex gap-8" data-sanity={attr('productAttributes')}>
             {productAttributes?.map(({ _key, title, description, image }) => (
               <div key={_key} className="bg-sand px-10 py-12 text-center">
                 {/* eslint-disable-next-line */}
                 {image && <img className="mx-auto mb-6 size-12" src={image.url} />}
-                <h3 className="font-sans-wide text-xl">{title}</h3>
-                <p className="mt-2">{description}</p>
+                <h3 className="font-sans-wide text-xl">{vercelStegaCleanAll(title)}</h3>
+                <p className="mt-2">{vercelStegaCleanAll(description)}</p>
               </div>
             ))}
           </div>

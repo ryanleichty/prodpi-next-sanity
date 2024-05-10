@@ -3,11 +3,12 @@
 import Product from '@/components/Product'
 import { PRODUCT_QUERY } from '@/sanity/lib/queries'
 import { ProductPayload } from '@/types'
-import { QueryResponseInitial, useQuery } from '@sanity/react-loader'
+import { QueryResponseInitial } from '@sanity/react-loader'
+import { useQuery } from '@/sanity/loader/useQuery'
 
 type Props = {
-  initial: QueryResponseInitial<ProductPayload | null>
   params: { slug: string }
+  initial: QueryResponseInitial<ProductPayload | null>
 }
 
 export default function ProductPreview({ initial, params }: Props) {

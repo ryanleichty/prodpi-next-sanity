@@ -4,21 +4,9 @@ import * as queryStore from '@sanity/react-loader'
 import { draftMode } from 'next/headers'
 
 import { client } from '@/sanity/lib/client'
-import {
-  homePageQuery,
-  pagesBySlugQuery,
-  PRODUCT_QUERY,
-  projectBySlugQuery,
-  settingsQuery,
-} from '@/sanity/lib/queries'
+import { homePageQuery, pagesBySlugQuery, PRODUCT_QUERY, settingsQuery } from '@/sanity/lib/queries'
 import { token } from '@/sanity/lib/token'
-import {
-  HomePagePayload,
-  PagePayload,
-  ProductPayload,
-  ProjectPayload,
-  SettingsPayload,
-} from '@/types'
+import { HomePagePayload, PagePayload, ProductPayload, SettingsPayload } from '@/types'
 
 const serverClient = client.withConfig({
   token,
@@ -37,9 +25,7 @@ queryStore.setServerClient(serverClient)
 const usingCdn = serverClient.config().useCdn
 // Automatically handle draft mode
 export const loadQuery = ((query, params = {}, options = {}) => {
-  const {
-    perspective = draftMode().isEnabled ? 'previewDrafts' : 'published',
-  } = options
+  const { perspective = draftMode().isEnabled ? 'previewDrafts' : 'published' } = options
   // Don't cache by default
   let revalidate: NextFetchRequestConfig['revalidate'] = 0
   // If `next.tags` is set, and we're not using the CDN, then it's safe to cache
@@ -85,14 +71,6 @@ export function loadProduct(slug: string) {
     PRODUCT_QUERY,
     { slug },
     { next: { tags: [`product:${slug}`] } },
-  )
-}
-
-export function loadProject(slug: string) {
-  return loadQuery<ProjectPayload | null>(
-    projectBySlugQuery,
-    { slug },
-    { next: { tags: [`project:${slug}`] } },
   )
 }
 

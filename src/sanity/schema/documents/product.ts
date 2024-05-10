@@ -50,7 +50,7 @@ export default defineType({
       name: 'description',
       title: 'Description',
       rows: 5, // default: 10
-      validation: (rule) => rule.max(TEXT_LENGTH_MD).required(),
+      validation: (rule) => rule.max(TEXT_LENGTH_MD),
     }),
     defineField({
       type: 'reference',
@@ -225,4 +225,11 @@ export default defineType({
       ],
     }),
   ],
+  preview: {
+    select: {
+      title: 'title',
+      subtitle: 'productCategory.title',
+      media: 'imageGallery.0.asset',
+    },
+  },
 })

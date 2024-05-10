@@ -29,6 +29,7 @@ export const pagesBySlugQuery = groq`
 export const PRODUCT_QUERY = groq`
   *[_type == "product" && slug.current == $slug][0] {
     _id,
+    _type,
     title,
     "slug": slug.current,
     description,

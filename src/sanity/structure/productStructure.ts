@@ -9,9 +9,7 @@ export default defineStructure<ListItemBuilder>((S) =>
       S.list()
         .title('Products')
         .items([
-          S.listItem()
-            .title('All Products')
-            .child(S.documentTypeList('product')),
+          S.listItem().title('All Products').child(S.documentTypeList('product')),
           S.listItem()
             .title('Products by Category')
             .child(
@@ -19,6 +17,16 @@ export default defineStructure<ListItemBuilder>((S) =>
                 S.documentList()
                   .title('Products')
                   .filter('_type == "product" && $id == productCategory._ref')
+                  .params({ id }),
+              ),
+            ),
+          S.listItem()
+            .title('Products by Print Method')
+            .child(
+              S.documentTypeList('printMethod').child((id) =>
+                S.documentList()
+                  .title('Products')
+                  .filter('_type == "product" && $id in printMethods[]._ref')
                   .params({ id }),
               ),
             ),

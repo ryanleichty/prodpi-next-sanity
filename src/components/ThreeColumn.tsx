@@ -1,5 +1,6 @@
 import { PortableText, PortableTextComponents } from 'next-sanity'
 import { vercelStegaCleanAll } from '@sanity/client/stega'
+import { cx } from '@/utils'
 
 export function ThreeColumn({ columns }) {
   return (
@@ -34,7 +35,16 @@ function TextColumn({ eyebrow, body, textSize }) {
   const components: PortableTextComponents = {
     block: {
       normal: ({ children }) => {
-        return <p className="font-serif text-3xl italic">{children}</p>
+        return (
+          <p
+            className={cx(
+              'font-serif text-3xl italic',
+              vercelStegaCleanAll(textSize) === 'large' ? 'text-3xl' : 'text-2xl',
+            )}
+          >
+            {children}
+          </p>
+        )
       },
     },
     marks: {
@@ -48,10 +58,7 @@ function TextColumn({ eyebrow, body, textSize }) {
     <div className="bg-brass p-8">
       <p className="mb-4 font-sans-wide text-sm uppercase tracking-widest">{eyebrow}</p>
       <div data-sanity-edit-target>
-        <PortableText
-          value={body}
-          components={vercelStegaCleanAll(textSize) === 'large' ? components : undefined}
-        />
+        <PortableText value={body} components={components} />
       </div>
     </div>
   )
