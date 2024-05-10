@@ -1,7 +1,8 @@
+import { PageData } from '@/types'
 import { PortableText, type PortableTextBlock, type PortableTextComponents } from 'next-sanity'
-import { ThreeColumn } from './ThreeColumn'
 import { OneColumn } from './OneColumn'
-import { PageData, ProductBlocksData } from '@/types'
+import { ThreeColumn } from './ThreeColumn'
+import { TwoColumn } from './TwoColumn'
 
 type Props = {
   page: PageData
@@ -44,8 +45,8 @@ export default function ProductBlocks({ page: data, blocks }: Props) {
       oneColumn: ({ value }) => {
         return <OneColumn page={data} block={value} />
       },
-      textColumn: ({ value }) => {
-        return <section>Text column</section>
+      twoColumn: ({ value }) => {
+        return <TwoColumn page={data} block={value} />
       },
       threeColumn: ({ value }) => {
         return <ThreeColumn page={data} block={value} />

@@ -86,6 +86,24 @@ export type OneColumnBlockData = {
   }
 }
 
+export type TwoColumnBlockData = {
+  _type: string
+  _key: string
+  columns: ColumnData[]
+}
+
+export type ColumnData = {
+  _type: string
+  _key: string
+  body?: PortableTextBlock[]
+  image?: {
+    url: string
+    width: number
+    height: number
+    alt?: string
+  }
+}
+
 export type ThreeColumnBlockData = {
   _type: string
   _key: string

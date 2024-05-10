@@ -16,7 +16,7 @@ export function ThreeColumn({ page: data, block }: Props) {
 
   return (
     <section
-      className="grid grid-cols-[repeat(auto-fit,minmax(0px,1fr))]"
+      className="mx-auto grid max-w-container grid-cols-[repeat(auto-fit,minmax(0px,1fr))]"
       data-sanity={attr(`blocks[_key=="${block._key}"]`)}
     >
       {block.columns?.length > 0 &&

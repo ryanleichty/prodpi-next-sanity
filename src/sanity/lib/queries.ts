@@ -13,7 +13,22 @@ const ONE_COLUMN_BLOCK_QUERY = groq`_type == 'oneColumn' => {
   },
 }`
 
-const TWO_COLUMN_BLOCK_QUERY = groq`_type == 'threeColumn' => {
+const TWO_COLUMN_BLOCK_QUERY = groq`_type == 'twoColumn' => {
+  _type,
+  _key,
+  columns[]{
+    body,
+    image {
+      "url": asset->url,
+      alt,
+      caption,
+      "width": asset->metadata.dimensions.width,
+      "height": asset->metadata.dimensions.height,
+    },
+  }
+}`
+
+const THREE_COLUMN_BLOCK_QUERY = groq`_type == 'threeColumn' => {
   _type,
   _key,
   columns[]{
@@ -46,6 +61,7 @@ export const HOME_QUERY = groq`*[_type == "home"][0]{
   blocks[]{
     ${ONE_COLUMN_BLOCK_QUERY},
     ${TWO_COLUMN_BLOCK_QUERY},
+    ${THREE_COLUMN_BLOCK_QUERY},
   },
 }`
 
@@ -81,6 +97,7 @@ export const PRODUCT_QUERY = groq`*[ _type == "product" && slug.current == $slug
   blocks[]{
     ${ONE_COLUMN_BLOCK_QUERY},
     ${TWO_COLUMN_BLOCK_QUERY},
+    ${THREE_COLUMN_BLOCK_QUERY},
   },
   editor {
     id,

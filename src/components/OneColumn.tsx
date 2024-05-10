@@ -27,7 +27,7 @@ export function OneColumn({ page: data, block }: Props) {
 
   return (
     <section
-      className="relative flex flex-col items-center"
+      className="relative mx-auto flex max-w-container flex-col items-center"
       data-sanity={attr(`blocks[_key=="${block._key}"]`)}
     >
       {block.image && (
