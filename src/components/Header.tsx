@@ -20,13 +20,14 @@ export default function Header({ className, ...props }: Props) {
   return (
     <header
       className={cx(
+        'px-container',
         isProductMenuOpen ? 'bg-white' : '',
         'transition-colors duration-200',
         className,
       )}
       {...props}
     >
-      <div className="container">
+      <div className="mx-auto max-w-container">
         <div className="grid h-20 grid-cols-[1fr_auto_1fr] items-center border-b border-black/20">
           <div>
             <MenuDrawer />
