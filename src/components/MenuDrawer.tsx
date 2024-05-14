@@ -1,17 +1,23 @@
 'use client'
 
+import { SUB_MENU } from '@/data'
+import { ListItem, MenuItem, SettingsPayload } from '@/types'
+import { cx, resolveHref } from '@/utils'
 import * as AccordionPrimitive from '@radix-ui/react-accordion'
 import * as Dialog from '@radix-ui/react-dialog'
 import Link from 'next/link'
 import React from 'react'
-import { PRODUCT_MENU, SUB_MENU } from '@/data'
-import { cx, resolveHref } from '@/utils'
 import Button from './Button'
 import { IconClose, IconPlus } from './Icon'
 import ShiftBy from './ShiftBy'
-import { ListItem, MenuItem } from '@/types'
 
-export default function MenuDrawer({ data: navigation }: { data: MenuItem[] }) {
+type Props = {
+  data: SettingsPayload
+}
+
+export default function MenuDrawer({ data }: Props) {
+  const { navigation } = data
+
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
@@ -44,7 +50,7 @@ export default function MenuDrawer({ data: navigation }: { data: MenuItem[] }) {
           </div>
           <div className="container relative h-[calc(100vh-64px-80px)] overflow-y-auto py-8">
             <Accordion type="single" collapsible className="mb-12 mt-4">
-              {navigation.map((menuItem, i) => {
+              {navigation?.map((menuItem, i) => {
                 if (menuItem.children && menuItem.children.length > 0) {
                   return (
                     <AccordionItem key={menuItem._key} value={`item-${i}`}>

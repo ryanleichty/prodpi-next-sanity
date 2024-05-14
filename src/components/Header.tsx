@@ -4,7 +4,7 @@ import Logo from '@/components/Logo'
 import MenuDrawer from '@/components/MenuDrawer'
 import ShiftBy from '@/components/ShiftBy'
 import { urlForImage } from '@/sanity/lib/utils'
-import { type ImageItem, type ListItem, type MenuItem } from '@/types'
+import { SettingsPayload, type ImageItem, type ListItem, type MenuItem } from '@/types'
 import { cx, resolveHref } from '@/utils'
 import * as NavigationMenuPrimitive from '@radix-ui/react-navigation-menu'
 import { createDataAttribute } from 'next-sanity'
@@ -13,22 +13,17 @@ import { usePathname } from 'next/navigation'
 import { ComponentPropsWithoutRef, useState } from 'react'
 
 type Props = ComponentPropsWithoutRef<'header'> & {
-  doc: {
-    _id: string
-    _type: string
-  }
-  navigation: MenuItem[]
+  data: SettingsPayload
 }
 
-export default function Header({ doc, navigation, className, ...props }: Props) {
+export default function Header({ data, className, ...props }: Props) {
   const [isProductMenuOpen, setIsProductMenuOpen] = useState('')
 
   return (
     <header
       className={cx(
-        'px-container',
-        isProductMenuOpen ? 'bg-white' : '',
-        'transition-colors duration-200',
+        'px-container transition-colors duration-200',
+        isProductMenuOpen ? 'bg-white' : null,
         className,
       )}
       {...props}
@@ -36,7 +31,7 @@ export default function Header({ doc, navigation, className, ...props }: Props) 
       <div className="mx-auto max-w-container">
         <div className="grid h-20 grid-cols-[1fr_auto_1fr] items-center border-b border-black/20">
           <div>
-            <MenuDrawer doc={doc} data={navigation} />
+            <MenuDrawer data={data} />
           </div>
           <Link href="/" className="p-4">
             <Logo />
@@ -46,8 +41,7 @@ export default function Header({ doc, navigation, className, ...props }: Props) 
           </div>
         </div>
         <NavigationMenu
-          doc={doc}
-          data={navigation}
+          data={data}
           value={isProductMenuOpen}
           onValueChange={setIsProductMenuOpen}
         />
@@ -57,17 +51,15 @@ export default function Header({ doc, navigation, className, ...props }: Props) 
 }
 
 type NavigationMenuProps = React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Root> & {
-  doc: {
-    _id: string
-    _type: string
-  }
-  data: MenuItem[]
+  data: SettingsPayload
 }
 
-function NavigationMenu({ doc, data: navigation, ...props }: NavigationMenuProps) {
+function NavigationMenu({ data, ...props }: NavigationMenuProps) {
+  const { navigation } = data
+
   const attr = createDataAttribute({
-    id: doc._id,
-    type: doc._type,
+    id: data._id,
+    type: data._type,
   })
 
   return (
@@ -76,7 +68,7 @@ function NavigationMenu({ doc, data: navigation, ...props }: NavigationMenuProps
         <div className="mr-2 font-sans-wide text-[10px] uppercase leading-snug sm:hidden">
           Quick shop
         </div>
-        {navigation.map((menuItem) => {
+        {navigation?.map((menuItem) => {
           if (menuItem?.children) {
             return (
               <NavigationMenuPrimitive.Item key={menuItem._key} className="h-full">
@@ -89,43 +81,50 @@ function NavigationMenu({ doc, data: navigation, ...props }: NavigationMenuProps
                 <NavigationMenuPrimitive.Content className="absolute left-0 top-0 w-full data-[motion=from-end]:animate-enterFromRight data-[motion=from-start]:animate-enterFromLeft data-[motion=to-end]:animate-exitToRight data-[motion=to-start]:animate-exitToLeft">
                   <div className="scrollbar-hidden container grid auto-cols-[200px] grid-flow-col gap-8 overflow-x-auto py-8 lg:justify-center">
                     {menuItem.children.map((childItem) => {
-                      switch (childItem._type) {
-                        case 'imageItem':
-                          return (
-                            <ImageItem
-                              key={childItem._key}
-                              data={childItem}
-                              data-sanity={attr(
-                                `navigation[_key=="${menuItem._key}"].children[_key=="${childItem._key}"]`,
-                              )}
-                            />
-                          )
-                        case 'listItem':
-                          return (
-                            <ListItem key={childItem._key} data={childItem}>
-                              {childItem?.links.length > 0 && (
-                                <ul>
-                                  {childItem.links.map((link) => (
+                      if (childItem._type === 'imageItem') {
+                        const imageItem = childItem as ImageItem
+
+                        return (
+                          <ImageItem
+                            key={imageItem._key}
+                            data={imageItem}
+                            data-sanity={attr(
+                              `navigation[_key=="${menuItem._key}"].children[_key=="${imageItem._key}"]`,
+                            )}
+                          />
+                        )
+                      }
+
+                      if (childItem._type === 'listItem') {
+                        const listItem = childItem as ListItem
+
+                        return (
+                          <ListItem key={childItem._key} data={childItem}>
+                            {(listItem?.links?.length || 0) > 0 && (
+                              <ul>
+                                {listItem?.links?.map((link) => {
+                                  const computedTitle = link.title || link.link?.title
+                                  const computedHref =
+                                    link.url || resolveHref(link.link?._type, link.link?.slug) || ''
+
+                                  return (
                                     <li key={link._key}>
                                       <NavigationMenuLink
-                                        href={
-                                          link.url ||
-                                          resolveHref(link.link?._type, link.link?.slug) ||
-                                          ''
-                                        }
+                                        href={computedHref}
                                         className="-mx-2 block rounded-sm px-2 py-0.5 hover:bg-sand/50"
                                         data-sanity={attr(
-                                          `navigation[_key=="${menuItem._key}"].children[_key=="${childItem._key}"].links[_key=="${link._key}"]`,
+                                          `navigation[_key=="${menuItem._key}"].children[_key=="${listItem._key}"].links[_key=="${link._key}"]`,
                                         )}
                                       >
-                                        {link.title || link.link?.title}
+                                        {computedTitle}
                                       </NavigationMenuLink>
                                     </li>
-                                  ))}
-                                </ul>
-                              )}
-                            </ListItem>
-                          )
+                                  )
+                                })}
+                              </ul>
+                            )}
+                          </ListItem>
+                        )
                       }
                     })}
                   </div>
@@ -152,27 +151,25 @@ function NavigationMenu({ doc, data: navigation, ...props }: NavigationMenuProps
   )
 }
 
-type ImageItemProps = React.ComponentPropsWithoutRef<typeof NavigationMenuLink> & {
+type ImageItemProps = React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Link> & {
   data: ImageItem
 }
 
-function ImageItem({ data: item, ...props }: ImageItemProps) {
+function ImageItem({ data: { image, title, url, link }, ...props }: ImageItemProps) {
+  const computedTitle = title || link?.title
+  const computedHref = url || resolveHref(link?._type, link?.slug) || ''
+
   return (
-    <NavigationMenuLink
-      {...props}
-      href={item.url || resolveHref(item.link?._type, item.link?.slug) || ''}
-    >
-      {item.image && (
-        <>
-          {/* eslint-disable-next-line */}
-          <img
-            className="aspect-square object-cover"
-            src={urlForImage(item.image)?.size(200, 200).auto('format').fit('crop').url()}
-            alt=""
-          />
-          <p className="mt-1 text-sm">{item.title || item.link?.title}</p>
-        </>
+    <NavigationMenuLink {...props} href={computedHref}>
+      {image && (
+        // eslint-disable-next-line
+        <img
+          className="aspect-square object-cover"
+          src={urlForImage(image)?.size(200, 200).auto('format').fit('crop').url()}
+          alt=""
+        />
       )}
+      {computedTitle && <p className="mt-1 text-sm">{computedTitle}</p>}
     </NavigationMenuLink>
   )
 }
@@ -181,12 +178,10 @@ type ListItemProps = React.ComponentPropsWithoutRef<'div'> & {
   data: ListItem
 }
 
-function ListItem({ children, data: item }: ListItemProps) {
+function ListItem({ children, data: { _key, title } }: ListItemProps) {
   return (
-    <div key={item._key} className="border-l pl-4">
-      {item.title && (
-        <div className="mb-2 font-sans-wide text-xs uppercase text-brass">{item.title}</div>
-      )}
+    <div key={_key} className="border-l pl-4">
+      {title && <div className="mb-2 font-sans-wide text-xs uppercase text-brass">{title}</div>}
       {children}
     </div>
   )
