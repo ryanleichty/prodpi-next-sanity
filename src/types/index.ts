@@ -2,6 +2,8 @@ import type { PortableTextBlock } from 'next-sanity'
 import type { Image } from 'sanity'
 
 export interface SettingsPayload {
+  _id: string
+  _type: string
   ogImage?: Image
   navigation?: MenuItem[]
 }

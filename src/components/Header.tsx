@@ -7,15 +7,20 @@ import { urlForImage } from '@/sanity/lib/utils'
 import { type ImageItem, type ListItem, type MenuItem } from '@/types'
 import { cx, resolveHref } from '@/utils'
 import * as NavigationMenuPrimitive from '@radix-ui/react-navigation-menu'
+import { createDataAttribute } from 'next-sanity'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { ComponentPropsWithoutRef, useState } from 'react'
 
 type Props = ComponentPropsWithoutRef<'header'> & {
+  doc: {
+    _id: string
+    _type: string
+  }
   navigation: MenuItem[]
 }
 
-export default function Header({ navigation, className, ...props }: Props) {
+export default function Header({ doc, navigation, className, ...props }: Props) {
   const [isProductMenuOpen, setIsProductMenuOpen] = useState('')
 
   return (
@@ -31,7 +36,7 @@ export default function Header({ navigation, className, ...props }: Props) {
       <div className="mx-auto max-w-container">
         <div className="grid h-20 grid-cols-[1fr_auto_1fr] items-center border-b border-black/20">
           <div>
-            <MenuDrawer data={navigation} />
+            <MenuDrawer doc={doc} data={navigation} />
           </div>
           <Link href="/" className="p-4">
             <Logo />
@@ -41,6 +46,7 @@ export default function Header({ navigation, className, ...props }: Props) {
           </div>
         </div>
         <NavigationMenu
+          doc={doc}
           data={navigation}
           value={isProductMenuOpen}
           onValueChange={setIsProductMenuOpen}
@@ -51,10 +57,19 @@ export default function Header({ navigation, className, ...props }: Props) {
 }
 
 type NavigationMenuProps = React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Root> & {
+  doc: {
+    _id: string
+    _type: string
+  }
   data: MenuItem[]
 }
 
-function NavigationMenu({ data: navigation, ...props }: NavigationMenuProps) {
+function NavigationMenu({ doc, data: navigation, ...props }: NavigationMenuProps) {
+  const attr = createDataAttribute({
+    id: doc._id,
+    type: doc._type,
+  })
+
   return (
     <NavigationMenuPrimitive.Root {...props}>
       <NavigationMenuPrimitive.List className="scrollbar-hidden flex h-16 items-center overflow-x-auto border-b border-black/20 lg:justify-center">
@@ -65,7 +80,10 @@ function NavigationMenu({ data: navigation, ...props }: NavigationMenuProps) {
           if (menuItem?.children) {
             return (
               <NavigationMenuPrimitive.Item key={menuItem._key} className="h-full">
-                <NavigationMenuPrimitive.Trigger className="h-full whitespace-nowrap px-4 font-serif uppercase transition-colors hover:text-brass focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-black focus-visible:ring-offset-4 focus-visible:ring-offset-off-white">
+                <NavigationMenuPrimitive.Trigger
+                  className="h-full whitespace-nowrap px-4 font-serif uppercase transition-colors hover:text-brass focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-black focus-visible:ring-offset-4 focus-visible:ring-offset-off-white"
+                  data-sanity={attr(`navigation[_key=="${menuItem._key}"]`)}
+                >
                   {menuItem.title || menuItem.link?.title}
                 </NavigationMenuPrimitive.Trigger>
                 <NavigationMenuPrimitive.Content className="absolute left-0 top-0 w-full data-[motion=from-end]:animate-enterFromRight data-[motion=from-start]:animate-enterFromLeft data-[motion=to-end]:animate-exitToRight data-[motion=to-start]:animate-exitToLeft">
@@ -73,9 +91,41 @@ function NavigationMenu({ data: navigation, ...props }: NavigationMenuProps) {
                     {menuItem.children.map((childItem) => {
                       switch (childItem._type) {
                         case 'imageItem':
-                          return <ImageItem key={childItem._key} value={childItem} />
+                          return (
+                            <ImageItem
+                              key={childItem._key}
+                              data={childItem}
+                              data-sanity={attr(
+                                `navigation[_key=="${menuItem._key}"].children[_key=="${childItem._key}"]`,
+                              )}
+                            />
+                          )
                         case 'listItem':
-                          return <ListItem key={childItem._key} value={childItem} />
+                          return (
+                            <ListItem key={childItem._key} data={childItem}>
+                              {childItem?.links.length > 0 && (
+                                <ul>
+                                  {childItem.links.map((link) => (
+                                    <li key={link._key}>
+                                      <NavigationMenuLink
+                                        href={
+                                          link.url ||
+                                          resolveHref(link.link?._type, link.link?.slug) ||
+                                          ''
+                                        }
+                                        className="-mx-2 block rounded-sm px-2 py-0.5 hover:bg-sand/50"
+                                        data-sanity={attr(
+                                          `navigation[_key=="${menuItem._key}"].children[_key=="${childItem._key}"].links[_key=="${link._key}"]`,
+                                        )}
+                                      >
+                                        {link.title || link.link?.title}
+                                      </NavigationMenuLink>
+                                    </li>
+                                  ))}
+                                </ul>
+                              )}
+                            </ListItem>
+                          )
                       }
                     })}
                   </div>
@@ -102,10 +152,14 @@ function NavigationMenu({ data: navigation, ...props }: NavigationMenuProps) {
   )
 }
 
-function ImageItem({ value: item }: { value: ImageItem }) {
+type ImageItemProps = React.ComponentPropsWithoutRef<typeof NavigationMenuLink> & {
+  data: ImageItem
+}
+
+function ImageItem({ data: item, ...props }: ImageItemProps) {
   return (
     <NavigationMenuLink
-      key={item._key}
+      {...props}
       href={item.url || resolveHref(item.link?._type, item.link?.slug) || ''}
     >
       {item.image && (
@@ -123,26 +177,17 @@ function ImageItem({ value: item }: { value: ImageItem }) {
   )
 }
 
-function ListItem({ value: item }: { value: ListItem }) {
+type ListItemProps = React.ComponentPropsWithoutRef<'div'> & {
+  data: ListItem
+}
+
+function ListItem({ children, data: item }: ListItemProps) {
   return (
     <div key={item._key} className="border-l pl-4">
       {item.title && (
         <div className="mb-2 font-sans-wide text-xs uppercase text-brass">{item.title}</div>
       )}
-      {item.links && item.links.length > 0 && (
-        <ul>
-          {item.links.map((link) => (
-            <li key={link._key}>
-              <NavigationMenuLink
-                href={link.url || resolveHref(link.link?._type, link.link?.slug) || ''}
-                className="-mx-2 block rounded-sm px-2 py-0.5 hover:bg-sand/50"
-              >
-                {link.title || link.link?.title}
-              </NavigationMenuLink>
-            </li>
-          ))}
-        </ul>
-      )}
+      {children}
     </div>
   )
 }

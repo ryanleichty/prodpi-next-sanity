@@ -4,7 +4,7 @@ import '@/css/main.css'
 import { urlForOpenGraphImage } from '@/sanity/lib/utils'
 import { loadHomePage, loadSettings } from '@/sanity/loader/loadQuery'
 import type { Metadata, Viewport } from 'next'
-import { toPlainText } from 'next-sanity'
+import { createDataAttribute, toPlainText } from 'next-sanity'
 import dynamic from 'next/dynamic'
 import localFont from 'next/font/local'
 import { draftMode } from 'next/headers'
@@ -64,7 +64,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
       <body className="flex min-h-screen flex-col bg-off-white antialiased selection:bg-surfboard/50">
         <Suspense>
-          <Header navigation={settings?.navigation || []} />
+          <Header
+            doc={{ _id: settings._id, _type: settings._type }}
+            navigation={settings?.navigation || []}
+          />
         </Suspense>
         <Suspense>{children}</Suspense>
         <Suspense>

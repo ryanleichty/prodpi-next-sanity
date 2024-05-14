@@ -110,6 +110,8 @@ export const PRODUCT_QUERY = groq`*[ _type == "product" && slug.current == $slug
 }`
 
 export const SETTINGS_QUERY = groq`*[_type == "settings"][0]{
+  _id,
+  _type,
   ogImage,
   navigation[]{
     _key,
