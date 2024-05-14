@@ -43,7 +43,7 @@ export async function generateMetadata(): Promise<Metadata> {
           default: homePage.title || 'Personal website',
         }
       : undefined,
-    description: homePage?.overview ? toPlainText(homePage.overview) : undefined,
+    description: homePage?.description,
     openGraph: {
       images: ogImage ? [ogImage] : [],
     },
@@ -55,6 +55,8 @@ export const viewport: Viewport = {
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  let { data: settings } = await loadSettings()
+
   return (
     <html lang="en" className={gtsuper.variable}>
       <head>
@@ -62,7 +64,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
       <body className="flex min-h-screen flex-col bg-off-white antialiased selection:bg-surfboard/50">
         <Suspense>
-          <Header />
+          <Header navigation={settings?.navigation || []} />
         </Suspense>
         <Suspense>{children}</Suspense>
         <Suspense>

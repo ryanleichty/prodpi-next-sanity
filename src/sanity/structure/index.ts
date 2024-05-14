@@ -1,4 +1,4 @@
-import { resolveHref } from '@/sanity/lib/utils'
+import { resolveHref } from '@/utils'
 import home from '@/sanity/schema/singletons/home'
 import settings from '@/sanity/schema/singletons/settings'
 import { DocumentDefinition, SanityDocument } from 'sanity'

@@ -111,4 +111,52 @@ export const PRODUCT_QUERY = groq`*[ _type == "product" && slug.current == $slug
 
 export const SETTINGS_QUERY = groq`*[_type == "settings"][0]{
   ogImage,
+  navigation[]{
+    _key,
+    title,
+    url,
+    link->{
+      _type,
+      title,
+      "slug": select(
+        _type == 'product' => productCategory->slug.current + "/" + slug.current,
+        slug.current
+      ),
+    },
+    children[]{
+      _type == 'imageItem' => {
+        _type,
+        _key,
+        image,
+        title,
+        url,
+        link->{
+          _type,
+          title,
+          "slug": select(
+            _type == 'product' => productCategory->slug.current + "/" + slug.current,
+            slug.current
+          ),
+        },
+      },
+      _type == 'listItem' => {
+        _type,
+        _key,
+        title,
+        links[] {
+          _key,
+          title,
+          url,
+          link->{
+            _type,
+            title,
+            "slug": select(
+              _type == 'product' => productCategory->slug.current + "/" + slug.current,
+              slug.current
+            ),
+          },
+        },
+      },
+    },
+  }
 }`

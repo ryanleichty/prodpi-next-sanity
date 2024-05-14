@@ -3,6 +3,48 @@ import type { Image } from 'sanity'
 
 export interface SettingsPayload {
   ogImage?: Image
+  navigation?: MenuItem[]
+}
+
+export type MenuItem = {
+  _key: string
+  title?: string
+  url?: string
+  link?: {
+    _type: string
+    title: string
+    slug: string
+  }
+  children?: ImageItem[] | ListItem[]
+}
+
+export type ImageItem = {
+  _type: string
+  _key: string
+  image?: Image
+  title?: string
+  url?: string
+  link?: {
+    _type?: string
+    title?: string
+    slug?: string
+  }
+}
+
+export type ListItem = {
+  _type: string
+  _key: string
+  title?: string
+  links?: {
+    _key: string
+    title?: string
+    url?: string
+    link?: {
+      _type: string
+      title?: string
+      slug?: string
+    }
+  }[]
 }
 
 // Page payloads

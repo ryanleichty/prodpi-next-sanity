@@ -5,12 +5,13 @@ import * as Dialog from '@radix-ui/react-dialog'
 import Link from 'next/link'
 import React from 'react'
 import { PRODUCT_MENU, SUB_MENU } from '@/data'
-import { cx } from '@/utils'
+import { cx, resolveHref } from '@/utils'
 import Button from './Button'
 import { IconClose, IconPlus } from './Icon'
 import ShiftBy from './ShiftBy'
+import { ListItem, MenuItem } from '@/types'
 
-export default function MenuDrawer() {
+export default function MenuDrawer({ data: navigation }: { data: MenuItem[] }) {
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
@@ -43,28 +44,34 @@ export default function MenuDrawer() {
           </div>
           <div className="container relative h-[calc(100vh-64px-80px)] overflow-y-auto py-8">
             <Accordion type="single" collapsible className="mb-12 mt-4">
-              {PRODUCT_MENU.map((item, i) => {
-                if (item?.children) {
+              {navigation.map((menuItem, i) => {
+                if (menuItem.children && menuItem.children.length > 0) {
                   return (
-                    <AccordionItem key={item.label} value={`item-${i}`}>
-                      <AccordionTrigger>{item.label}</AccordionTrigger>
+                    <AccordionItem key={menuItem._key} value={`item-${i}`}>
+                      <AccordionTrigger>{menuItem.title || menuItem.link?.title}</AccordionTrigger>
                       <AccordionContent>
-                        {item?.children.map((childItem) => {
-                          if (childItem.type !== 'image') {
+                        {menuItem.children.map((listItem: ListItem) => {
+                          if (listItem._type === 'listItem') {
                             return (
-                              <div key={childItem?.label} className="p-3">
-                                <h2 className="mb-2 font-sans-wide text-xs uppercase opacity-60">
-                                  {childItem?.label}
-                                </h2>
+                              <div key={listItem._key} className="p-3">
+                                {listItem.title && (
+                                  <div className="mb-2 font-sans-wide text-xs uppercase opacity-60">
+                                    {listItem.title}
+                                  </div>
+                                )}
                                 <ul>
-                                  {childItem.children.map((listChildItem) => {
+                                  {listItem?.links?.map((link) => {
                                     return (
-                                      <li key={listChildItem?.label}>
+                                      <li key={link._key}>
                                         <Link
-                                          href={listChildItem?.url}
+                                          href={
+                                            link.url ||
+                                            resolveHref(link.link?._type, link.link?.slug) ||
+                                            ''
+                                          }
                                           className="block py-0.5 transition-opacity hover:opacity-60"
                                         >
-                                          {listChildItem?.label}
+                                          {link.title || link.link?.title}
                                         </Link>
                                       </li>
                                     )

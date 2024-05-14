@@ -8,7 +8,7 @@ const imageBuilder = createImageUrlBuilder({
   dataset: dataset || '',
 })
 
-export const urlForImage = (source: Image | undefined) => {
+export function urlForImage(source: Image | undefined) {
   // Ensure that source image contains a valid reference
   if (!source?.asset?._ref) {
     return undefined
@@ -19,18 +19,4 @@ export const urlForImage = (source: Image | undefined) => {
 
 export function urlForOpenGraphImage(image: Image | undefined) {
   return urlForImage(image)?.width(1200).height(627).fit('crop').url()
-}
-
-export function resolveHref(documentType?: string, slug?: string): string | undefined {
-  switch (documentType) {
-    case 'home':
-      return '/'
-    case 'page':
-      return slug ? `/${slug}` : undefined
-    case 'product':
-      return slug ? `/products/${slug}` : undefined
-    default:
-      console.warn('Invalid document type:', documentType)
-      return undefined
-  }
 }
