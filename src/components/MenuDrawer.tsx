@@ -10,6 +10,7 @@ import React from 'react'
 import Button from './Button'
 import { IconClose, IconPlus } from './Icon'
 import ShiftBy from './ShiftBy'
+import { createDataAttribute } from 'next-sanity'
 
 type Props = {
   data: SettingsPayload
@@ -17,6 +18,11 @@ type Props = {
 
 export default function MenuDrawer({ data }: Props) {
   const { navigation } = data
+
+  const attr = createDataAttribute({
+    id: data._id,
+    type: data._type,
+  })
 
   return (
     <Dialog.Root>
@@ -54,7 +60,9 @@ export default function MenuDrawer({ data }: Props) {
                 if (menuItem.children && menuItem.children.length > 0) {
                   return (
                     <AccordionItem key={menuItem._key} value={`item-${i}`}>
-                      <AccordionTrigger>{menuItem.title || menuItem.link?.title}</AccordionTrigger>
+                      <AccordionTrigger data-sanity={attr(`navigation[_key=="${menuItem._key}"]`)}>
+                        {menuItem.title || menuItem.link?.title}
+                      </AccordionTrigger>
                       <AccordionContent>
                         {menuItem.children.map((listItem: ListItem) => {
                           if (listItem._type === 'listItem') {
@@ -67,17 +75,22 @@ export default function MenuDrawer({ data }: Props) {
                                 )}
                                 <ul>
                                   {listItem?.links?.map((link) => {
+                                    const computedTitle = link.title || link.link?.title
+                                    const computedHref =
+                                      link.url ||
+                                      resolveHref(link.link?._type, link.link?.slug) ||
+                                      ''
+
                                     return (
                                       <li key={link._key}>
                                         <Link
-                                          href={
-                                            link.url ||
-                                            resolveHref(link.link?._type, link.link?.slug) ||
-                                            ''
-                                          }
+                                          href={computedHref}
                                           className="block py-0.5 transition-opacity hover:opacity-60"
+                                          data-sanity={attr(
+                                            `navigation[_key=="${menuItem._key}"].children[_key=="${listItem._key}"].links[_key=="${link._key}"]`,
+                                          )}
                                         >
-                                          {link.title || link.link?.title}
+                                          {computedTitle}
                                         </Link>
                                       </li>
                                     )

@@ -1,11 +1,33 @@
-import { PortableText, PortableTextComponents, createDataAttribute } from 'next-sanity'
-import { vercelStegaCleanAll } from '@sanity/client/stega'
+import {
+  PortableText,
+  PortableTextBlock,
+  PortableTextComponents,
+  createDataAttribute,
+} from 'next-sanity'
 import { cx } from '@/utils'
-import { PageData, TwoColumnBlockData } from '@/types'
+import { PageData } from '@/types'
 
 type Props = {
   page: PageData
   block: TwoColumnBlockData
+}
+
+type TwoColumnBlockData = {
+  _type: string
+  _key: string
+  columns: ColumnData[]
+}
+
+type ColumnData = {
+  _type: string
+  _key: string
+  body?: PortableTextBlock[]
+  image?: {
+    url: string
+    width: number
+    height: number
+    alt?: string
+  }
 }
 
 export function TwoColumn({ page: data, block }: Props) {

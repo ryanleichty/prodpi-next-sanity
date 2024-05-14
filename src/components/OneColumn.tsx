@@ -1,9 +1,26 @@
-import { OneColumnBlockData, PageData } from '@/types'
-import { PortableText, PortableTextComponents, createDataAttribute } from 'next-sanity'
+import { PageData } from '@/types'
+import {
+  PortableText,
+  PortableTextBlock,
+  PortableTextComponents,
+  createDataAttribute,
+} from 'next-sanity'
 
 type Props = {
   page: PageData
   block: OneColumnBlockData
+}
+
+type OneColumnBlockData = {
+  _type: string
+  _key: string
+  body?: PortableTextBlock[]
+  image?: {
+    url: string
+    width: number
+    height: number
+    alt?: string
+  }
 }
 
 export function OneColumn({ page: data, block }: Props) {

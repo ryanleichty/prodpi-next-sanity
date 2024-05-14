@@ -1,7 +1,6 @@
 import React from 'react'
 import { cva } from '@/utils'
 import { VariantProps } from 'cva'
-import { Slot } from '@radix-ui/react-slot'
 import Link from 'next/link'
 
 const buttonVariants = cva({
@@ -22,15 +21,11 @@ const buttonVariants = cva({
 type ButtonOrLinkProps =
   | (React.ButtonHTMLAttributes<HTMLButtonElement> & {
       icon?: React.ReactNode
-      size?: 'sm' | 'md' | 'lg'
-      variant?: 'primary' | 'secondary'
       type?: 'button' | 'submit' | 'reset' | undefined
-    })
+    } & VariantProps<typeof buttonVariants>)
   | (React.AnchorHTMLAttributes<HTMLAnchorElement> & {
       icon?: React.ReactNode
-      size?: 'sm' | 'md' | 'lg'
-      variant?: 'primary' | 'secondary'
-    })
+    } & VariantProps<typeof buttonVariants>)
 
 function Button(
   {
