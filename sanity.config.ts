@@ -1,7 +1,8 @@
 'use client'
 
+import { StudioIcon } from '@/sanity/components/StudioIcon'
 import { apiVersion, dataset, projectId, studioUrl } from '@/sanity/lib/api'
-import { singletonPlugin } from '@/sanity/plugins/settings'
+import { singletonPlugin } from '@/sanity/plugins/singletonPlugin'
 import { locations } from '@/sanity/presentation/locations'
 import { mainDocuments } from '@/sanity/presentation/mainDocuments'
 import { schemaTypes } from '@/sanity/schema'
@@ -20,6 +21,7 @@ export default defineConfig({
   projectId: projectId || '',
   dataset: dataset || '',
   title: process.env.NEXT_PUBLIC_SANITY_PROJECT_TITLE || 'ProDPI',
+  icon: StudioIcon,
   schema: {
     types: schemaTypes,
   },
@@ -42,7 +44,7 @@ export default defineConfig({
         },
       },
     }),
-    // Configures the global "new document" button, and document actions, to suit the Settings document singleton
+    // Configures the global "new document" button, and document actions, to suit singleton documents
     singletonPlugin([home.name, settings.name]),
     // Vision is a tool that lets you query your content with GROQ in the studio
     // https://www.sanity.io/docs/the-vision-plugin
