@@ -29,7 +29,9 @@ export default defineConfig({
     }),
     media(),
     presentationTool({
-      locate,
+      resolve: {
+        locations: locate,
+      },
       icon: EyeOpenIcon,
       previewUrl: {
         draftMode: {
