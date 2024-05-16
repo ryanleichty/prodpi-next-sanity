@@ -95,6 +95,9 @@ export const PRODUCT_QUERY = groq`*[ _type == "product" && slug.current == $slug
     },
   },
   blocks[]{
+    _type == 'block' => {
+      ...,
+    },
     ${ONE_COLUMN_BLOCK_QUERY},
     ${TWO_COLUMN_BLOCK_QUERY},
     ${THREE_COLUMN_BLOCK_QUERY},
