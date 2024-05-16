@@ -2,6 +2,23 @@ import { map, Observable } from 'rxjs'
 import { DocumentLocationResolver, DocumentLocationsState } from 'sanity/presentation'
 import { resolveHref } from '@/utils'
 
+const observableDocs = ['home', 'product', 'productCategory', 'productAttribute', 'printMethod']
+
+const QUERY = `*[_id==$id || references($id)]{
+  _type,
+  "slug": select(
+    _type == 'product' => productCategory->slug.current + "/" + slug.current,
+    slug.current
+  ),
+  title
+}`
+
+type ObservableDocument = {
+  _type: string
+  slug: string
+  title: string | null
+}
+
 // See: https://www.sanity.io/docs/presentation-resolver-api#8d8bca7bfcd7
 export const locations: DocumentLocationResolver = (params, context) => {
   if (params.type === 'settings') {
@@ -11,72 +28,70 @@ export const locations: DocumentLocationResolver = (params, context) => {
     } satisfies DocumentLocationsState
   }
 
-  if (params.type === 'home' || params.type === 'page' || params.type === 'product') {
-    const doc$ = context.documentStore.listenQuery(
-      `*[_id==$id || references($id)]{_type,slug,title}`,
-      params,
-      { perspective: 'previewDrafts' },
-    ) as Observable<
-      | {
-          _type: string
-          slug: { current: string }
-          title: string | null
-        }[]
-      | null
-    >
+  if (observableDocs.includes(params.type)) {
+    const doc$ = context.documentStore.listenQuery(QUERY, params, {
+      perspective: 'previewDrafts',
+    }) as Observable<ObservableDocument[] | null>
 
     return doc$.pipe(
       map((docs) => {
-        const isReferencedBySettings = docs?.some((doc) => doc._type === 'settings')
-
         switch (params.type) {
           case 'home':
-            return isReferencedBySettings
-              ? ({
-                  locations: [
-                    {
-                      title: docs?.find((doc) => doc._type === 'home')?.title || 'Home',
-                      href: resolveHref(params.type)!,
-                    },
-                  ],
-                  tone: 'positive',
-                  message: 'This document is used to render the front page',
-                } satisfies DocumentLocationsState)
-              : ({
-                  tone: 'critical',
-                  message: `The top menu isn't linking to the home page. This might make it difficult for visitors to navigate your site.`,
-                } satisfies DocumentLocationsState)
-          case 'page':
             return {
-              locations: docs
-                ?.map((doc) => {
-                  const href = resolveHref(doc._type, doc?.slug?.current)
-                  return {
-                    title: doc?.title || 'Untitled',
-                    href: href!,
-                  }
-                })
-                .filter((doc) => doc.href !== undefined),
-              tone: isReferencedBySettings ? 'positive' : 'critical',
-              message: isReferencedBySettings
-                ? 'The top menu is linking to this page'
-                : "The top menu isn't linking to this page. It can still be accessed if the visitor knows the URL.",
+              locations: [
+                {
+                  title: docs?.find((doc) => doc._type === 'home')?.title || 'Home',
+                  href: resolveHref(params.type)!,
+                },
+              ],
             } satisfies DocumentLocationsState
           case 'product':
             return {
               locations: docs
                 ?.map((doc) => {
-                  const href = resolveHref(doc._type, doc?.slug?.current)
+                  const href = resolveHref(doc._type, doc?.slug)
                   return {
                     title: doc?.title || 'Untitled',
                     href: href!,
                   }
                 })
                 .filter((doc) => doc.href !== undefined),
-              tone: isReferencedBySettings ? 'caution' : undefined,
-              message: isReferencedBySettings
-                ? 'This document is used on all pages as it is in the top menu'
-                : undefined,
+            } satisfies DocumentLocationsState
+          case 'productCategory':
+            return {
+              locations: docs
+                ?.map((doc) => {
+                  const href = resolveHref(doc._type, doc?.slug)
+                  return {
+                    title: doc?.title || 'Untitled',
+                    href: href!,
+                  }
+                })
+                .filter((doc) => doc.href !== undefined),
+            } satisfies DocumentLocationsState
+          case 'productAttribute':
+            return {
+              locations: docs
+                ?.map((doc) => {
+                  const href = resolveHref(doc._type, doc?.slug)
+                  return {
+                    title: doc?.title || 'Untitled',
+                    href: href!,
+                  }
+                })
+                .filter((doc) => doc.href !== undefined),
+            } satisfies DocumentLocationsState
+          case 'printMethod':
+            return {
+              locations: docs
+                ?.map((doc) => {
+                  const href = resolveHref(doc._type, doc?.slug)
+                  return {
+                    title: doc?.title || 'Untitled',
+                    href: href!,
+                  }
+                })
+                .filter((doc) => doc.href !== undefined),
             } satisfies DocumentLocationsState
           default:
             return {
