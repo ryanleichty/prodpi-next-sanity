@@ -3,7 +3,7 @@ import { cx } from '@/utils'
 import ProductBlocks from '@/components/ProductBlocks'
 import { PortableText, createDataAttribute } from 'next-sanity'
 import { EncodeDataAttributeCallback } from '@sanity/react-loader'
-import { vercelStegaCleanAll } from '@sanity/client/stega'
+import { stegaClean } from '@sanity/client/stega'
 
 type Props = {
   product: ProductPayload | null
@@ -38,7 +38,7 @@ export function Product({ product, encodeDataAttribute }: Props) {
               data-sanity={attr('productCategory')}
               className="font-sans-wide uppercase tracking-wide text-brass"
             >
-              {vercelStegaCleanAll(productCategory.title)}
+              {stegaClean(productCategory.title)}
             </div>
           )}
           {title && <h1 className="mb-8 mt-4 font-sans-wide text-4xl">{title}</h1>}
@@ -110,8 +110,8 @@ export function Product({ product, encodeDataAttribute }: Props) {
               <div key={_key} className="bg-sand px-10 py-12 text-center">
                 {/* eslint-disable-next-line */}
                 {image && <img className="mx-auto mb-6 size-12" src={image.url} />}
-                <h3 className="font-sans-wide text-xl">{vercelStegaCleanAll(title)}</h3>
-                <p className="mt-2">{vercelStegaCleanAll(description)}</p>
+                <h3 className="font-sans-wide text-xl">{stegaClean(title)}</h3>
+                <p className="mt-2">{stegaClean(description)}</p>
               </div>
             ))}
           </div>

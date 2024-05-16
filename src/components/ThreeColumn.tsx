@@ -1,6 +1,6 @@
 import { PageData } from '@/types'
 import { cx } from '@/utils'
-import { vercelStegaCleanAll } from '@sanity/client/stega'
+import { stegaClean } from '@sanity/client/stega'
 import {
   PortableText,
   PortableTextBlock,
@@ -87,7 +87,7 @@ function TextColumn({ eyebrow, body, textSize }: TextColumnData) {
           <p
             className={cx(
               'font-serif text-3xl italic',
-              vercelStegaCleanAll(textSize) === 'large' ? 'text-3xl' : 'text-2xl',
+              stegaClean(textSize) === 'large' ? 'text-3xl' : 'text-2xl',
             )}
           >
             {children}
