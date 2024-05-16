@@ -1,6 +1,18 @@
 import { TEXT_LENGTH_MD } from '@/constants'
 import { DropIcon } from '@sanity/icons'
-import { defineArrayMember, defineField, defineType } from 'sanity'
+import {
+  PortableTextBlock,
+  SanityDocument,
+  defineArrayMember,
+  defineField,
+  defineType,
+} from 'sanity'
+
+export type PrintMethod = {
+  title: string
+  description: string
+  summary?: PortableTextBlock[]
+} & SanityDocument
 
 export default defineType({
   type: 'document',

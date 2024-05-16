@@ -1,6 +1,6 @@
-import { resolveHref } from '@/utils'
 import home from '@/sanity/schema/singletons/home'
 import settings from '@/sanity/schema/singletons/settings'
+import { resolveHref } from '@/utils'
 import { DocumentDefinition, SanityDocument } from 'sanity'
 import { Iframe } from 'sanity-plugin-iframe-pane'
 import { DefaultDocumentNodeResolver, StructureResolver } from 'sanity/structure'
@@ -29,6 +29,8 @@ export const structure: StructureResolver = (S, context) => {
       S.documentTypeListItem('productCategory').title('Product Categories'),
       S.documentTypeListItem('productAttribute').title('Product Attributes'),
       S.documentTypeListItem('printMethod').title('Print Methods'),
+      S.divider(),
+      S.documentTypeListItem('brandAttribute').title('Brand Attributes'),
     ])
 }
 

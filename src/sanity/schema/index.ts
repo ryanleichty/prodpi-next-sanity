@@ -7,6 +7,7 @@ import product from '@/sanity/schema/documents/product'
 import printMethod from '@/sanity/schema/documents/printMethod'
 import productAttribute from './documents/productAttribute'
 import productCategory from './documents/productCategory'
+import brandAttribute from './documents/brandAttribute'
 
 // Objects
 import oneColumn from './blocks/oneColumn'
@@ -23,6 +24,7 @@ export const schemaTypes = [
   productCategory,
   productAttribute,
   printMethod,
+  brandAttribute,
 
   // Objects
   oneColumn,

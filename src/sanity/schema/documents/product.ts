@@ -1,6 +1,8 @@
 import { TEXT_LENGTH_MD } from '@/constants'
 import { TagIcon } from '@sanity/icons'
 import { defineArrayMember, defineField, defineType } from 'sanity'
+import { ProductAttribute } from './productAttribute'
+import { PrintMethod } from './printMethod'
 
 export default defineType({
   type: 'document',
@@ -116,7 +118,7 @@ export default defineType({
           to: [{ type: 'printMethod' }],
           options: {
             filter: ({ document }) => {
-              const refList = document?.printMethods.map((doc) => {
+              const refList = (document?.printMethods as PrintMethod[]).map((doc) => {
                 return doc?._ref
               })
 
@@ -140,7 +142,7 @@ export default defineType({
           to: [{ type: 'productAttribute' }],
           options: {
             filter: ({ document }) => {
-              const refList = document?.productAttributes.map((doc) => {
+              const refList = (document?.productAttributes as ProductAttribute[]).map((doc) => {
                 return doc?._ref
               })
 

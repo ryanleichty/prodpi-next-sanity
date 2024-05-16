@@ -1,18 +1,18 @@
 import { TEXT_LENGTH_MD } from '@/constants'
-import { BlockContentIcon } from '@sanity/icons'
-import { Image, SanityDocument, defineField, defineType } from 'sanity'
+import { SparkleIcon } from '@sanity/icons'
+import { SanityDocument } from 'next-sanity'
+import { defineField, defineType } from 'sanity'
 
-export type ProductAttribute = {
+export type BrandAttribute = {
   title: string
   description: string
-  image?: Image
 } & SanityDocument
 
 export default defineType({
   type: 'document',
-  name: 'productAttribute',
-  title: 'Product Attribute',
-  icon: BlockContentIcon,
+  name: 'brandAttribute',
+  title: 'Brand Attribute',
+  icon: SparkleIcon,
   fields: [
     defineField({
       type: 'string',
@@ -26,11 +26,6 @@ export default defineType({
       title: 'Description',
       rows: 5, // default: 10
       validation: (rule) => rule.max(TEXT_LENGTH_MD).required(),
-    }),
-    defineField({
-      type: 'image',
-      name: 'image',
-      title: 'Image',
     }),
   ],
   preview: {
