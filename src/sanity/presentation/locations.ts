@@ -2,6 +2,7 @@ import { map, Observable } from 'rxjs'
 import { DocumentLocationResolver, DocumentLocationsState } from 'sanity/presentation'
 import { resolveHref } from '@/utils'
 
+// See: https://www.sanity.io/docs/presentation-resolver-api#8d8bca7bfcd7
 export const locations: DocumentLocationResolver = (params, context) => {
   if (params.type === 'settings') {
     return {
