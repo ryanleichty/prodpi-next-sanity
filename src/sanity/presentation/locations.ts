@@ -2,7 +2,7 @@ import { map, Observable } from 'rxjs'
 import { DocumentLocationResolver, DocumentLocationsState } from 'sanity/presentation'
 import { resolveHref } from '@/utils'
 
-export const locate: DocumentLocationResolver = (params, context) => {
+export const locations: DocumentLocationResolver = (params, context) => {
   if (params.type === 'settings') {
     return {
       message: 'This document is used on all pages',

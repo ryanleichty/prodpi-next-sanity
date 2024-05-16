@@ -2,7 +2,7 @@
 
 import { apiVersion, dataset, projectId, studioUrl } from '@/sanity/lib/api'
 import { singletonPlugin } from '@/sanity/plugins/settings'
-import { locate } from '@/sanity/presentation/locate'
+import { locations } from '@/sanity/presentation/locations'
 import { schemaTypes } from '@/sanity/schema'
 import home from '@/sanity/schema/singletons/home'
 import settings from '@/sanity/schema/singletons/settings'
@@ -30,7 +30,7 @@ export default defineConfig({
     media(),
     presentationTool({
       resolve: {
-        locations: locate,
+        locations,
       },
       icon: EyeOpenIcon,
       previewUrl: {
