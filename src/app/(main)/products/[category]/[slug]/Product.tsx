@@ -19,6 +19,7 @@ export function Product({ product, encodeDataAttribute }: Props) {
     title,
     description,
     productCategory,
+    printMethods,
     summary,
     imageGallery,
     productAttributes,
@@ -33,7 +34,7 @@ export function Product({ product, encodeDataAttribute }: Props) {
   return (
     <div className="px-container">
       <div className="mx-auto max-w-container">
-        <section className="grid grid-cols-[320px_1fr] gap-16">
+        <section className="grid gap-16 lg:grid-cols-[320px_1fr]">
           <div>
             {productCategory && (
               <div
@@ -45,10 +46,29 @@ export function Product({ product, encodeDataAttribute }: Props) {
             )}
             {title && <h1 className="mb-8 mt-4 font-sans-wide text-4xl">{title}</h1>}
             {description && <p className="text-sm">{description}</p>}
-            <Button className="w-full">Shop Now</Button>
-            <p className="mt-2 text-[gray]">Starts from $1.35</p>
-            <div>
-              <h2>How it’s printed</h2>
+
+            <div className="mt-8">
+              <Button className="w-full">Shop Now</Button>
+              <p className="mt-2 text-[gray]">Starts from $1.35</p>
+            </div>
+
+            <div
+              className="mt-10 bg-light-surfboard px-8 py-14 text-center"
+              data-sanity={attr('printMethods')}
+            >
+              <p className="font-serif italic">How it’s printed</p>
+              {printMethods?.[0].title && (
+                <h2 className="mt-6 font-sans-wide text-2xl font-bold uppercase">
+                  {printMethods[0].title}
+                </h2>
+              )}
+
+              {printMethods?.[0].description && (
+                <p className="mt-4">{printMethods[0].description}</p>
+              )}
+              <Button className="mt-8 bg-transparent hover:bg-white" variant="secondary">
+                Learn More
+              </Button>
             </div>
           </div>
           <div>
@@ -84,13 +104,17 @@ export function Product({ product, encodeDataAttribute }: Props) {
             )}
 
             {summary && (
-              <div className="mt-12" data-sanity-edit-target>
+              <div className="mt-12 @container" data-sanity-edit-target>
                 <PortableText
                   value={summary}
                   components={{
                     block: {
                       normal: ({ children }) => {
-                        return <p className="font-serif text-4xl italic">{children}</p>
+                        return (
+                          <p className="font-serif text-3xl/tight italic @lg:text-4xl/tight @xl:text-5xl/tight">
+                            {children}
+                          </p>
+                        )
                       },
                     },
                     marks: {
@@ -110,8 +134,12 @@ export function Product({ product, encodeDataAttribute }: Props) {
         </section>
 
         {productAttributes?.length && (
-          <section>
-            <h2 className="font-serif text-sm italic">Why we like it</h2>
+          <section className="mt-16">
+            <div className="mb-4 flex items-center gap-2">
+              <div className="h-px w-8 bg-brass" />
+              <h2 className="font-serif italic">Why we like it</h2>
+            </div>
+
             <div className="flex gap-8" data-sanity={attr('productAttributes')}>
               {productAttributes?.map(({ _key, title, description, image }) => (
                 <div key={_key} className="bg-sand px-10 py-12 text-center">

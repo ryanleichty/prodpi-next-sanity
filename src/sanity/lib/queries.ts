@@ -85,7 +85,13 @@ export const PRODUCT_QUERY = groq`*[ _type == "product" && slug.current == $slug
     alt,
     caption,
   },
-  printMethods,
+  printMethods[]{
+    _key,
+    _type,
+    "title": @->title,
+    "description": @->description,
+    "summary": @->summary,
+  },
   productAttributes[]{
     _key,
     "title": @->title,
