@@ -7,7 +7,7 @@ import { useQuery } from '@/sanity/loader/useQuery'
 import { Home } from './Home'
 
 type Props = {
-  params: { slug: string }
+  params: {}
   initial: QueryResponseInitial<HomePagePayload | null>
 }
 

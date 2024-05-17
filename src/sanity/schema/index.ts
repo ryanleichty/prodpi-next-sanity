@@ -1,6 +1,7 @@
 // Singletons
 import home from '@/sanity/schema/singletons/home'
 import settings from '@/sanity/schema/singletons/settings'
+import productSettings from '@/sanity/schema/singletons/productSettings'
 
 // Documents
 import product from '@/sanity/schema/documents/product'
@@ -18,6 +19,7 @@ export const schemaTypes = [
   // Singletons
   home,
   settings,
+  productSettings,
 
   // Documents
   product,

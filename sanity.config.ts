@@ -6,8 +6,6 @@ import { singletonPlugin } from '@/sanity/plugins/singletonPlugin'
 import { locations } from '@/sanity/presentation/locations'
 import { mainDocuments } from '@/sanity/presentation/mainDocuments'
 import { schemaTypes } from '@/sanity/schema'
-import home from '@/sanity/schema/singletons/home'
-import settings from '@/sanity/schema/singletons/settings'
 import { defaultDocumentNode, structure } from '@/sanity/structure'
 import { CodeIcon, EyeOpenIcon } from '@sanity/icons'
 import { visionTool } from '@sanity/vision'
@@ -45,7 +43,7 @@ export default defineConfig({
       },
     }),
     // Configures the global "new document" button, and document actions, to suit singleton documents
-    singletonPlugin([home.name, settings.name]),
+    singletonPlugin(['home', 'settings', 'productSettings']),
     // Vision is a tool that lets you query your content with GROQ in the studio
     // https://www.sanity.io/docs/the-vision-plugin
     visionTool({ defaultApiVersion: apiVersion, icon: CodeIcon }),

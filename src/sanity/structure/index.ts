@@ -5,6 +5,7 @@ import { DocumentDefinition, SanityDocument } from 'sanity'
 import { Iframe } from 'sanity-plugin-iframe-pane'
 import { DefaultDocumentNodeResolver, StructureResolver } from 'sanity/structure'
 import products from './productStructure'
+import { SparklesIcon } from '@sanity/icons'
 
 export const structure: StructureResolver = (S, context) => {
   function singletonItem(typeDef: DocumentDefinition) {
@@ -30,7 +31,7 @@ export const structure: StructureResolver = (S, context) => {
       S.documentTypeListItem('productAttribute').title('Product Attributes'),
       S.documentTypeListItem('printMethod').title('Print Methods'),
       S.divider(),
-      S.documentTypeListItem('brandAttribute').title('Brand Attributes'),
+      S.documentTypeListItem('brandAttribute').title('Brand Attributes').icon(SparklesIcon),
     ])
 }
 

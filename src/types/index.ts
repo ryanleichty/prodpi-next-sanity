@@ -97,6 +97,16 @@ export interface ProductPayload {
   }
 }
 
+export interface BrandAttributePayload {
+  _id: string
+  _type: string
+  brandAttributes: {
+    _key: string
+    title?: string
+    description?: string
+  }[]
+}
+
 export interface PrintMethod {
   title?: string
   description?: string
