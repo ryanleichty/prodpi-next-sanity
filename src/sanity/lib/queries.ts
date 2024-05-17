@@ -112,9 +112,18 @@ export const PRODUCT_QUERY = groq`*[ _type == "product" && slug.current == $slug
   },
 }`
 
-export const BRAND_ATTRIBUTES_QUERY = groq`*[_type == "productSettings"][0]{
+export const PRODUCT_SETTINGS_QUERY = groq`*[_type == "productSettings"][0]{
   _id,
   _type,
+  brandSummary {
+    eyebrow,
+    title,
+    attributes[]{
+      _key,
+      "title": @->title,
+      "description": @->description,
+    },
+  },
   brandAttributes[]{
     _key,
     "title": @->title,

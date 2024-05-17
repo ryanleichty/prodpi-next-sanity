@@ -2,13 +2,13 @@ import 'server-only'
 
 import { client } from '@/sanity/lib/client'
 import {
-  BRAND_ATTRIBUTES_QUERY,
+  PRODUCT_SETTINGS_QUERY,
   HOME_QUERY,
   PRODUCT_QUERY,
   SETTINGS_QUERY,
 } from '@/sanity/lib/queries'
 import { token } from '@/sanity/lib/token'
-import { BrandAttributePayload, HomePagePayload, ProductPayload, SettingsPayload } from '@/types'
+import { ProductSettingsPayload, HomePagePayload, ProductPayload, SettingsPayload } from '@/types'
 import * as queryStore from '@sanity/react-loader'
 import { draftMode } from 'next/headers'
 
@@ -74,10 +74,10 @@ export function loadProduct(slug: string) {
   )
 }
 
-export function loadBrandAttributes() {
-  return loadQuery<BrandAttributePayload | null>(
-    BRAND_ATTRIBUTES_QUERY,
+export function loadProductSettings() {
+  return loadQuery<ProductSettingsPayload | null>(
+    PRODUCT_SETTINGS_QUERY,
     {},
-    { next: { tags: ['settings', 'product'] } },
+    { next: { tags: ['productSettings', 'product'] } },
   )
 }

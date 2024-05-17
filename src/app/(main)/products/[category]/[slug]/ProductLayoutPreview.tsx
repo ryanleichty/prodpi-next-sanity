@@ -1,18 +1,18 @@
 'use client'
 
-import { BRAND_ATTRIBUTES_QUERY } from '@/sanity/lib/queries'
+import { PRODUCT_SETTINGS_QUERY } from '@/sanity/lib/queries'
 import { useQuery } from '@/sanity/loader/useQuery'
-import { BrandAttributePayload } from '@/types'
+import { ProductSettingsPayload } from '@/types'
 import { QueryResponseInitial } from '@sanity/react-loader'
 import { ProductLayout } from './ProductLayout'
 
 type Props = {
-  initial: QueryResponseInitial<BrandAttributePayload | null>
+  initial: QueryResponseInitial<ProductSettingsPayload | null>
 }
 
 export default function ProductPreview({ initial, ...props }: Props) {
-  const { data, encodeDataAttribute } = useQuery<BrandAttributePayload | null>(
-    BRAND_ATTRIBUTES_QUERY,
+  const { data, encodeDataAttribute } = useQuery<ProductSettingsPayload | null>(
+    PRODUCT_SETTINGS_QUERY,
     {},
     {
       initial,

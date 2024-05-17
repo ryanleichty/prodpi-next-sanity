@@ -97,9 +97,18 @@ export interface ProductPayload {
   }
 }
 
-export interface BrandAttributePayload {
+export interface ProductSettingsPayload {
   _id: string
   _type: string
+  brandSummary: {
+    eyebrow?: string
+    title?: PortableTextBlock[]
+    attributes: {
+      _key: string
+      title?: string
+      description?: string
+    }[]
+  }
   brandAttributes: {
     _key: string
     title?: string

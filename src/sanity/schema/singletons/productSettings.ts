@@ -9,25 +9,53 @@ export default defineType({
   icon: CogIcon,
   fields: [
     defineField({
-      name: 'brandAttributes',
-      title: 'Brand Attributes',
-      type: 'array',
-      of: [
-        defineArrayMember({
-          type: 'reference',
-          to: [{ type: 'brandAttribute' }],
-          options: {
-            filter: ({ document }) => {
-              const refList = (document?.brandAttributes as BrandAttribute[]).map((doc) => {
-                return doc?._ref
-              })
+      name: 'brandSummary',
+      title: 'Brand Summary',
+      type: 'object',
+      fields: [
+        defineField({
+          name: 'eyebrow',
+          title: 'Eyebrow',
+          type: 'string',
+        }),
+        defineField({
+          name: 'title',
+          title: 'Title',
+          type: 'array',
+          of: [
+            defineArrayMember({
+              type: 'block',
+              styles: [],
+              lists: [],
+              marks: {
+                annotations: [],
+                decorators: [{ title: 'Strong', value: 'strong' }],
+              },
+            }),
+          ],
+        }),
+        defineField({
+          name: 'attributes',
+          title: 'Attributes',
+          type: 'array',
+          of: [
+            defineArrayMember({
+              type: 'reference',
+              to: [{ type: 'brandAttribute' }],
+              options: {
+                filter: ({ document }) => {
+                  const refList = document?.brandSummary?.attributes.map((doc) => {
+                    return doc?._ref
+                  })
 
-              return {
-                filter: '!(_id in $list) && !(_id in path("drafts.**"))',
-                params: { list: refList },
-              }
-            },
-          },
+                  return {
+                    filter: '!(_id in $list) && !(_id in path("drafts.**"))',
+                    params: { list: refList },
+                  }
+                },
+              },
+            }),
+          ],
         }),
       ],
     }),

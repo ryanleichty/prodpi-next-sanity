@@ -4,6 +4,7 @@ import ProductBlocks from '@/components/ProductBlocks'
 import { PortableText, createDataAttribute } from 'next-sanity'
 import { EncodeDataAttributeCallback } from '@sanity/react-loader'
 import { stegaClean } from '@sanity/client/stega'
+import Button from '@/components/Button'
 
 type Props = {
   product: ProductPayload | null
@@ -44,6 +45,11 @@ export function Product({ product, encodeDataAttribute }: Props) {
             )}
             {title && <h1 className="mb-8 mt-4 font-sans-wide text-4xl">{title}</h1>}
             {description && <p className="text-sm">{description}</p>}
+            <Button className="w-full">Shop Now</Button>
+            <p className="mt-2 text-[gray]">Starts from $1.35</p>
+            <div>
+              <h2>How it’s printed</h2>
+            </div>
           </div>
           <div>
             {imageGallery && imageGallery.length > 0 && (
