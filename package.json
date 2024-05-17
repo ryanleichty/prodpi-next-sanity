@@ -20,7 +20,7 @@
     "@sanity/image-url": "^1.0.2",
     "@sanity/preview-url-secret": "^1.6.13",
     "@sanity/react-loader": "^1.9.19",
-    "@sanity/ui": "^2.1.10",
+    "@sanity/ui": "^2.1.7",
     "@sanity/vision": "^3.42.1",
     "@tailwindcss/typography": "^0.5.12",
     "cva": "^1.0.0-beta.1",
