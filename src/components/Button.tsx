@@ -4,7 +4,7 @@ import { VariantProps } from 'cva'
 import Link from 'next/link'
 
 const buttonVariants = cva({
-  base: 'inline-flex font-sans-wide items-center justify-between gap-2 h-12 whitespace-nowrap text-sm uppercase tracking-widest px-6 transition-colors duration-100',
+  base: 'inline-flex font-sans-wide items-center justify-center gap-2 h-12 whitespace-nowrap text-sm uppercase tracking-widest px-6 transition-colors duration-100',
   variants: {
     variant: {
       primary: 'bg-pacific text-white hover:bg-black',
