@@ -149,7 +149,7 @@ export const SETTINGS_QUERY = groq`*[_type == "settings"][0]{
       _type,
       title,
       "slug": select(
-        _type == 'product' => productCategory->slug.current + "/" + slug.current,
+        _type == 'product' && defined(productCategory) => productCategory->slug.current + "/" + slug.current,
         slug.current
       ),
     },
@@ -164,7 +164,7 @@ export const SETTINGS_QUERY = groq`*[_type == "settings"][0]{
           _type,
           title,
           "slug": select(
-            _type == 'product' => productCategory->slug.current + "/" + slug.current,
+            _type == 'product' && defined(productCategory) => productCategory->slug.current + "/" + slug.current,
             slug.current
           ),
         },
@@ -181,7 +181,7 @@ export const SETTINGS_QUERY = groq`*[_type == "settings"][0]{
             _type,
             title,
             "slug": select(
-              _type == 'product' => productCategory->slug.current + "/" + slug.current,
+              _type == 'product' && defined(productCategory) => productCategory->slug.current + "/" + slug.current,
               slug.current
             ),
           },
