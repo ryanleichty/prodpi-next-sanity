@@ -13,7 +13,7 @@ export default defineStructure<ListItemBuilder>((S) =>
         .title('Products')
         .items([
           S.listItem()
-            .title(productSettings.title!)
+            .title('Settings')
             .icon(productSettings.icon)
             .child(
               S.editor()
@@ -22,9 +22,9 @@ export default defineStructure<ListItemBuilder>((S) =>
                 .documentId(productSettings.name),
             ),
           S.divider(),
-          S.listItem().title('All Products').child(S.documentTypeList('product')),
+          S.listItem().title('All').child(S.documentTypeList('product')),
           S.listItem()
-            .title('Products by Category')
+            .title('By Category')
             .child(
               S.documentTypeList('productCategory').child((id) =>
                 S.documentList()
@@ -34,7 +34,7 @@ export default defineStructure<ListItemBuilder>((S) =>
               ),
             ),
           S.listItem()
-            .title('Products by Print Method')
+            .title('By Print Method')
             .child(
               S.documentTypeList('printMethod').child((id) =>
                 S.documentList()
