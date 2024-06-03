@@ -23,7 +23,7 @@
     "@sanity/ui": "^2.1.14",
     "@sanity/vision": "^3.44.0",
     "@tailwindcss/container-queries": "^0.1.1",
-    "@tailwindcss/typography": "^0.5.12",
+    "@tailwindcss/typography": "^0.5.13",
     "cva": "^1.0.0-beta.1",
     "next": "^14.2.3",
     "next-sanity": "^9.3.10",
@@ -40,13 +40,13 @@
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.7",
     "@types/react": "18.2.66",
-    "autoprefixer": "10.4.18",
-    "eslint": "8.57.0",
+    "autoprefixer": "^10.4.19",
+    "eslint": "^8.57.0",
     "eslint-config-next": "14.1.3",
-    "postcss": "8.4.36",
-    "prettier": "^3.2.5",
-    "prettier-plugin-tailwindcss": "^0.5.12",
-    "tailwindcss": "3.4.1",
+    "postcss": "^8.4.38",
+    "prettier": "^3.3.0",
+    "prettier-plugin-tailwindcss": "^0.6.1",
+    "tailwindcss": "^3.4.3",
     "typescript": "^5.4.5"
   }
 }
