@@ -115,6 +115,7 @@ export const PRODUCT_QUERY = groq`*[ _type == "product" && slug.current == $slug
   seo {
     title,
     description,
+    keywords[],
   },
 }`
 
