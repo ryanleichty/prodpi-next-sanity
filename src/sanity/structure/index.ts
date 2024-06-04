@@ -1,11 +1,13 @@
+import { client } from '@/sanity/lib/client'
 import home from '@/sanity/schema/singletons/home'
 import settings from '@/sanity/schema/singletons/settings'
 import { resolveHref } from '@/utils'
+import { SparklesIcon } from '@sanity/icons'
+import { groq } from 'next-sanity'
 import { DocumentDefinition, SanityDocument } from 'sanity'
 import { Iframe } from 'sanity-plugin-iframe-pane'
 import { DefaultDocumentNodeResolver, StructureResolver } from 'sanity/structure'
 import products from './productStructure'
-import { SparklesIcon } from '@sanity/icons'
 
 export const structure: StructureResolver = (S, context) => {
   function singletonItem(typeDef: DocumentDefinition) {
@@ -60,13 +62,33 @@ export const defaultDocumentNode: DefaultDocumentNodeResolver = (S, { schemaType
   }
 }
 
+type SanityDocumentWithSlug = SanityDocument & { slug?: { current?: string } }
+
 // Customize this function to show the correct URL based on the current document
-function getPreviewUrl(doc: SanityDocument & { slug?: { current?: string } }) {
-  if (!doc?.slug?.current) {
+async function getPreviewUrl(doc: SanityDocumentWithSlug) {
+  let slug = doc?.slug?.current
+
+  if (!slug) {
     return new Error('Missing slug')
   }
 
-  const urlPath = resolveHref(doc._type, doc.slug.current)
+  if (doc._type === 'product') {
+    const productCategorySlug = await getProductCategorySlug(slug)
+    slug = `${productCategorySlug}/${slug}`
+  }
+
+  const urlPath = resolveHref(doc._type, slug)
 
   return `${window.location.origin}${urlPath}`
+}
+
+async function getProductCategorySlug(slug: string) {
+  const PRODUCT_QUERY = groq`*[_type == "product" && slug.current == $slug][0]{
+      productCategory-> {
+        "slug": slug.current
+      }
+    }`
+  const product = await client.fetch(PRODUCT_QUERY, { slug })
+
+  return product?.productCategory?.slug
 }
