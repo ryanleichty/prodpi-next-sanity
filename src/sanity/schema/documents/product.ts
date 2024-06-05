@@ -224,15 +224,6 @@ export default defineType({
           name: 'description',
           title: 'Description',
         }),
-        defineField({
-          type: 'array',
-          name: 'keywords',
-          title: 'Keywords',
-          of: [{ type: 'string' }],
-          options: {
-            layout: 'tags',
-          },
-        }),
       ],
     }),
   ],
